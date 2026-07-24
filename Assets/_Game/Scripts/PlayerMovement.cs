@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
-    public Vector2 moveDirection;
-    public Vector2 lastMoveDirection;
+    public Vector2 moveDirection { get; private set; }
+    public Vector2 lastMoveDirection { get; private set; }
     
-    [SerializeField] private InputReader  _inputReader;
+    [SerializeField] private InputReader  _inputReader; //Later refactor
+    [SerializeField] private float moveSpeed;
     private Rigidbody2D _rigidbody2D;
 
     private void Awake()
@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         _inputReader.OnMovePerformed += HandleMove;
+        
     }
 
     private void OnDisable()
@@ -31,12 +32,16 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = new Vector2(direction.x, direction.y).normalized;
         if (moveDirection.x != 0)
         {
-            lastMoveDirection.x = moveDirection.x;
+            Vector2 tempVector = lastMoveDirection;
+            tempVector.x = moveDirection.x;
+            lastMoveDirection = tempVector;
         }
 
         if (moveDirection.y != 0)
         {
-            lastMoveDirection.y = moveDirection.y;
+            Vector2 tempVector = lastMoveDirection;
+            tempVector.y = moveDirection.y;
+            lastMoveDirection = tempVector;
         }
         _rigidbody2D.linearVelocity = new Vector2(moveSpeed * moveDirection.x, moveSpeed * moveDirection.y);
     }

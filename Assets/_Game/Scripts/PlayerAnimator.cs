@@ -36,7 +36,6 @@ public class PlayerAnimator : MonoBehaviour
         {
             _spriteRenderer.flipX = false;
         }
-        Debug.Log(_playerMovement.lastMoveDirection);
     }
     
 }
