@@ -592,7 +592,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1044140623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   _inputReader: {fileID: 11400000, guid: 6d5cb4af76e26ca45a6d41bd14b919ab, type: 2}
-  moveSpeed: 100
+  moveSpeed: 10
 --- !u!95 &1044140624
 Animator:
   serializedVersion: 7

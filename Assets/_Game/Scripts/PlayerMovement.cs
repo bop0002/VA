@@ -1,6 +1,8 @@
 using System;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Vector2 = UnityEngine.Vector2;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 lastMoveDirection { get; private set; }
     
     [SerializeField] private InputReader  _inputReader; //Later refactor
+    private Vector2 currentVelocity;
     [SerializeField] private float moveSpeed;
     private Rigidbody2D _rigidbody2D;
 
@@ -27,6 +30,14 @@ public class PlayerMovement : MonoBehaviour
         _inputReader.OnMovePerformed -= HandleMove;
     }
     
+    private void FixedUpdate()
+    {
+        if (_rigidbody2D.linearVelocity != currentVelocity)
+        {
+            _rigidbody2D.linearVelocity = currentVelocity;
+        }
+    }
+    
     private void HandleMove(Vector2 direction)
     {
         moveDirection = new Vector2(direction.x, direction.y).normalized;
@@ -43,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
             tempVector.y = moveDirection.y;
             lastMoveDirection = tempVector;
         }
-        _rigidbody2D.linearVelocity = new Vector2(moveSpeed * moveDirection.x, moveSpeed * moveDirection.y);
+
+        currentVelocity = new Vector2(moveSpeed * moveDirection.x, moveSpeed * moveDirection.y);
     }
 }
