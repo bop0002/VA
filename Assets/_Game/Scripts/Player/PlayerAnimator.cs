@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    PlayerMovement _playerMovement;
-    Animator _animator;
-    SpriteRenderer _spriteRenderer;
+    private PlayerView _playerView;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
-        _playerMovement = GetComponent<PlayerMovement>();
+        _playerView = GetComponent<PlayerView>();
         _animator = GetComponent<Animator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
-        if (_playerMovement.moveDirection.x != 0 || _playerMovement.moveDirection.y != 0)
+        if (_playerView.moveDirection.x != 0 || _playerView.moveDirection.y != 0)
         {
             _animator.SetBool("Move", true);
             CheckSpirteDirection();
@@ -28,7 +28,7 @@ public class PlayerAnimator : MonoBehaviour
     
     private void CheckSpirteDirection()
     {
-        if(_playerMovement.lastMoveDirection.x <0)
+        if(_playerView.lastMoveDirection.x <0)
         {
             _spriteRenderer.flipX = true;
         }

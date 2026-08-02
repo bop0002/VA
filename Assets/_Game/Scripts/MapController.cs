@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MapController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> chunkPrefabs; ///Later refactor
-    [SerializeField] private PlayerMovement playerMovement; ///Later refactor
+    [SerializeField] private PlayerView playerView; ///Later refactor
     [SerializeField] private ObjectPoolingManager  objectPoolingManager;
     
     private Dictionary<GridPosition,ChunkView> _activeGridPositions;
@@ -24,7 +25,7 @@ public class MapController : MonoBehaviour
 
     private void Update()
     {
-        GridPosition playerGridPos = GridPositionExtensions.WorldToGrid(playerMovement.transform.position);
+        GridPosition playerGridPos = GridPositionExtensions.WorldToGrid(playerView.transform.position);
         if(playerGridPos != _playerLastPos) ChunkChecker();
         _playerLastPos = playerGridPos;
     }
@@ -39,7 +40,7 @@ public class MapController : MonoBehaviour
     private void ChunkChecker()
     {
         _removeList.Clear();
-        GridPosition playerGridPos = GridPositionExtensions.WorldToGrid(playerMovement.transform.position);
+        GridPosition playerGridPos = GridPositionExtensions.WorldToGrid(playerView.transform.position);
         for (int i = -viewDistance; i <= viewDistance; i++)
         {
             for(int j = -viewDistance;j <=viewDistance ;j++)

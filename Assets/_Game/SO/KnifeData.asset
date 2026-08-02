@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353d8533bf7614e45a38cd1fda99e56d, type: 3}
+  m_Name: KnifeData
+  m_EditorClassIdentifier: Assembly-CSharp::KnifeData
+  Id: 1
+  DisplayName: Knife
+  Icon: {fileID: -1988313005, guid: 6b90931aedc40134ca8103e5d51f34f1, type: 3}
+  Prefab: {fileID: 9067889594832110098, guid: 11c28a28f675bbe4fad301b20c26e8f4, type: 3}
+  Levels:
+  - Speed: 15
+    Damage: 1
+    Pierce: 1
+    Size: 1
+    Duration: 2
+    Cooldown: 1
+    ProjectileCount: 2
+    UpgradeDescription: Cac1
+  - Speed: 20
+    Damage: 2
+    Pierce: 2
+    Size: 1
+    Duration: 2
+    Cooldown: 2
+    ProjectileCount: 1
+    UpgradeDescription: Cac2
+  SpawnSpacing: 0.35

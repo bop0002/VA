@@ -9,6 +9,7 @@ public class ObjectPoolingManager : MonoBehaviour
     private GameObject _emptyHolder;
     private GameObject _tileMapHolder;
     private GameObject _propHolder;
+    private GameObject _weaponProjectileHolder;
     public static ObjectPoolingManager Instance { get; private set; }
     
     private void Awake()
@@ -31,7 +32,8 @@ public class ObjectPoolingManager : MonoBehaviour
     public enum PoolType
     {
         TileMap,
-        Prop
+        Prop,
+        WeaponProjectile
     }
     
     private void SetUpEmpties()
@@ -43,6 +45,9 @@ public class ObjectPoolingManager : MonoBehaviour
         
         _propHolder = new GameObject("Prop");
         _propHolder.transform.SetParent(_emptyHolder.transform);
+        
+        _weaponProjectileHolder = new GameObject("WeaponProjectile");
+        _weaponProjectileHolder.transform.SetParent(_emptyHolder.transform);
         
         DontDestroyOnLoad(_tileMapHolder.transform.parent);
         
@@ -94,6 +99,8 @@ public class ObjectPoolingManager : MonoBehaviour
             case PoolType.Prop:
                 return _propHolder;
                 break;
+            case PoolType.WeaponProjectile:
+                return _weaponProjectileHolder;
             default:
                 return null;
                 break;
@@ -121,6 +128,11 @@ public class ObjectPoolingManager : MonoBehaviour
             obj.transform.rotation = rot;
             obj.SetActive(true);
 
+            if (obj.TryGetComponent(out IPoolable poolable))
+            {
+                poolable.OnSpawn();
+            }
+            
             if (typeof(T) == typeof(GameObject))
             {
                 return obj as T;
@@ -153,6 +165,11 @@ public class ObjectPoolingManager : MonoBehaviour
                 obj.transform.SetParent(GetParentTransform(poolType).transform);
             }
 
+            if (obj.TryGetComponent(out IPoolable poolable))
+            {
+                poolable.OnDespawn();
+            }
+            
             if (_prefabs2Pool.TryGetValue(prefab, out ObjectPool<GameObject> pool))
             {
                 pool.Release(obj);
