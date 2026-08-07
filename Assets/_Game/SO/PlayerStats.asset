@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4549e18ed4f9fdb4994001b2e82ae71d, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
-  SpeedRate: 1
+  SpeedRate: 2
   DamageRate: 1
   Pierce: 0
   ProjectileCount: 0
-  Health: 100
+  Health: 1000
   ProjectileSpeedRate: 1
   Armor: 1
   ProjectileSize: 1

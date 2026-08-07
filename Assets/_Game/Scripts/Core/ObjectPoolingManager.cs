@@ -10,6 +10,7 @@ public class ObjectPoolingManager : MonoBehaviour
     private GameObject _tileMapHolder;
     private GameObject _propHolder;
     private GameObject _weaponProjectileHolder;
+    private GameObject _enemyHolder;
     public static ObjectPoolingManager Instance { get; private set; }
     
     private void Awake()
@@ -33,7 +34,8 @@ public class ObjectPoolingManager : MonoBehaviour
     {
         TileMap,
         Prop,
-        WeaponProjectile
+        WeaponProjectile,
+        Enemy
     }
     
     private void SetUpEmpties()
@@ -48,6 +50,9 @@ public class ObjectPoolingManager : MonoBehaviour
         
         _weaponProjectileHolder = new GameObject("WeaponProjectile");
         _weaponProjectileHolder.transform.SetParent(_emptyHolder.transform);
+        
+        _enemyHolder = new GameObject("Enemy");
+        _enemyHolder.transform.SetParent(_emptyHolder.transform);
         
         DontDestroyOnLoad(_tileMapHolder.transform.parent);
         
@@ -101,6 +106,8 @@ public class ObjectPoolingManager : MonoBehaviour
                 break;
             case PoolType.WeaponProjectile:
                 return _weaponProjectileHolder;
+            case PoolType.Enemy:
+                return _enemyHolder;
             default:
                 return null;
                 break;

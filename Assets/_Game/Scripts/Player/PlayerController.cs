@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     {
 
         _player = new Player(playerStats);
-        playerView.InitStat(_player.Stats.SpeedRate);
+        playerView.InitStat(_player);
         weaponController.Init(_player);
     }
 

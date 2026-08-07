@@ -44,11 +44,11 @@ public class Projectile : MonoBehaviour,IPoolable
         transform.position += (Vector3)(Direction * (Speed * deltaTime));
     }
 
-    protected virtual void OnCollisionEnter2D(Collision2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (!_isAlive) return;
-        
-        if(!other.gameObject.TryGetComponent(out IDamageable damageable))
+            
+        if(!other.gameObject.TryGetComponent(out IDamageable damageable) || other.CompareTag("Player") )
         {
             return;
         }

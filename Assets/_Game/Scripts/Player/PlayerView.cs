@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 
-public class PlayerView : MonoBehaviour
+public class PlayerView : MonoBehaviour,IDamageable
 {
     public Vector2 moveDirection { get; private set; }
     public Vector2 lastMoveDirection { get; private set; }
     
     [SerializeField] private InputReader  _inputReader; //Later refactor
     private Vector2 currentVelocity;
-    [SerializeField] private float moveSpeed = 10;
+    [SerializeField] private float moveSpeed = 5;
+    public bool IsAlive { get; private set; }
     private Rigidbody2D _rigidbody2D;
+    private Player _player;
+    private PlayerStats Stats => _player.Stats;
+    
 
     private void Awake()
     {
@@ -20,9 +24,11 @@ public class PlayerView : MonoBehaviour
         lastMoveDirection = Vector2.right;
     }
     
-    public void InitStat(float speedRate)
+    public void InitStat(Player player)
     {
-        moveSpeed = speedRate * moveSpeed;
+        _player = player;
+        moveSpeed = Stats.SpeedRate*moveSpeed;
+        IsAlive = true;
     }
     
     private void OnEnable()
@@ -44,7 +50,19 @@ public class PlayerView : MonoBehaviour
             _rigidbody2D.linearVelocity = currentVelocity;
         }
     }
-    
+
+    public void TakeDamage(float damage)
+    {
+        if (!IsAlive) return;
+        Stats.Health -= damage;
+        Debug.Log($"{gameObject.name} dealt {damage} damage to {Stats.Health}");
+        if(Stats.Health <= 0)
+        {
+            Debug.Log("Player is dead");
+            IsAlive = false;
+        }
+    }
+
     private void HandleMove(Vector2 direction)
     {
         moveDirection = new Vector2(direction.x, direction.y);
@@ -52,7 +70,7 @@ public class PlayerView : MonoBehaviour
         {
             lastMoveDirection = moveDirection;  //!!!
         }
-        Debug.Log("lastMoveDirection:" + lastMoveDirection);
+        //Debug.Log("lastMoveDirection:" + lastMoveDirection);
         currentVelocity = new Vector2(moveSpeed * moveDirection.x, moveSpeed * moveDirection.y);
     }
 }

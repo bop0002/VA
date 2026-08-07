@@ -17,13 +17,13 @@ MonoBehaviour:
   Icon: {fileID: -1988313005, guid: 6b90931aedc40134ca8103e5d51f34f1, type: 3}
   Prefab: {fileID: 9067889594832110098, guid: 11c28a28f675bbe4fad301b20c26e8f4, type: 3}
   Levels:
-  - Speed: 15
-    Damage: 1
+  - Speed: 10
+    Damage: 10
     Pierce: 1
     Size: 1
     Duration: 2
     Cooldown: 1
-    ProjectileCount: 2
+    ProjectileCount: 1
     UpgradeDescription: Cac1
   - Speed: 20
     Damage: 2

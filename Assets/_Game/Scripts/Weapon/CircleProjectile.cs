@@ -24,7 +24,7 @@ public class CircleProjectile : Projectile
         transform.position = _owner.position;
     }
     
-    protected override void OnCollisionEnter2D(Collision2D other)
+    protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (!_isAlive) return;
         if(!other.gameObject.TryGetComponent(out IDamageable damageable))
