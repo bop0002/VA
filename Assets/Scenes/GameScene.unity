@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   _playerView: {fileID: 1044140623}
   startingWeapons:
-  - {fileID: 11400000, guid: 3b5ae54e942cc004f9791d5531d261c0, type: 2}
+  - {fileID: 11400000, guid: cde1af5d203d9b34b85279b84440acfa, type: 2}
 --- !u!1 &245279178
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _playerView: {fileID: 1044140623}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
+  testEnemySpawn: 1000
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

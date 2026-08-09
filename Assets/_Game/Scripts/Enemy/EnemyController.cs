@@ -6,12 +6,16 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private  PlayerView _playerView;
     [SerializeField] private EnemyData _data; // temp;
+    [SerializeField] private int testEnemySpawn;
     private List<EnemyView> _enemies;
 
     private void Start()
     {
         _enemies = new List<EnemyView>();
-        TestInit();
+        for (int i = 0; i < testEnemySpawn; i++)
+        {
+            TestInit();
+        }
     }
     
     private void TestInit()

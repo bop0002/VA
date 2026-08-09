@@ -3,34 +3,35 @@ using UnityEngine;
 public class GarlickWeapon : Weapon
 {
     private GarlickData _garlickData;
-
+    private AuraProjectile _cirleProjectile;
+    private bool _isInitialized;
     public GarlickWeapon(GarlickData data) : base(data)
     {
         _garlickData = data;
+        _isInitialized = false;
     }
 
     protected override void Fire(WeaponContext ctx)
     {
-        WeaponLevelStats weaponStats = Stats;
-        PlayerStats playerStats = ctx.PlayerStats;
+        ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
         
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, Stats.Speed * playerStats.SpeedRate,
-            Stats.Damage * playerStats.DamageRate,Stats.Pierce * playerStats.Pierce,Stats.Size * playerStats.ProjectileSize,Stats.Duration + playerStats.ProjectileDuration,ctx.Origin);
-        int count = Stats.ProjectileCount + playerStats.ProjectileCount;
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.Origin, stats);
         Quaternion rot = Quaternion.Euler(0f, 0f, 0f);
         
-        for (int i = 0; i < count; i++)
+        if (_isInitialized == false)
         {
-            //Vector3 offset = (Vector3)(ctx.Direction.normalized * (i * _garlickData.SpawnSpacing));
             Vector3 spawnPos = ctx.Origin.position;
             
-            CircleProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<CircleProjectile>(Data.Prefab, spawnPos, rot,
+            AuraProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<AuraProjectile>(Data.Prefab, spawnPos, rot,
                 ObjectPoolingManager.PoolType.WeaponProjectile);
-
-            if (projectile == null) return;
-            
-            projectile.Init(info);
+                        
+            _cirleProjectile = projectile;
+            _cirleProjectile.Init(info);
+            _isInitialized = true;
         }
-        
+        if(_cirleProjectile != null)
+        {
+            _cirleProjectile.ApplyStats(info); //later refactor ??? constantly update new info???
+        }
     }
 }

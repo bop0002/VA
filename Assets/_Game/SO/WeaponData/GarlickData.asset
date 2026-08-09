@@ -24,6 +24,7 @@ MonoBehaviour:
     Duration: 1.5
     Cooldown: 2
     ProjectileCount: 1
+    Knockback: 5
     UpgradeDescription: 
   - Speed: 1
     Damage: 1.2
@@ -32,5 +33,5 @@ MonoBehaviour:
     Duration: 1.7
     Cooldown: 2
     ProjectileCount: 1
+    Knockback: 0
     UpgradeDescription: 
-  fadeSpeed: 0.35

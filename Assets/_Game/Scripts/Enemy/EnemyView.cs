@@ -1,17 +1,47 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour,IPoolable,IDamageable
 {
     private EnemyData _data;
     private EnemyStats  _stats;
-    private Vector2 _direction;
+    private Vector2 _directionTowardPlayer;
     private Transform _player;
     private SpriteRenderer _renderer;
+    
+    //DEBUG NOT FINAL VFX GET HIT
+    [SerializeField] private float flashDuration = 0.1f;
+
+    private Material originalMaterial;
+    private Material flashMaterial;
+    private Coroutine flashCoroutine;
+    
+    public void Flash()
+    {
+        if (flashCoroutine != null)
+            StopCoroutine(flashCoroutine);
+
+        flashCoroutine = StartCoroutine(FlashRoutine());
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        _renderer.material = flashMaterial;
+
+        yield return new WaitForSeconds(flashDuration);
+        
+        _renderer.material = originalMaterial;
+        flashCoroutine = null;
+    }
+    
     public bool IsAlive { get; private set; }
 
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        
+        originalMaterial = _renderer.material;
+        flashMaterial = new Material(Shader.Find("GUI/Text Shader"));
     }
     
     public void Init(EnemyData data,EnemySpawnContext context)
@@ -25,19 +55,19 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     public void Tick(float deltaTime)
     {
         if(!IsAlive) return;
+        _directionTowardPlayer = ( _player.position - transform.position).normalized;
         Move(deltaTime);
         FlipSprite();
     }
 
     private void Move(float deltaTime)
     {
-        _direction = ( _player.position - transform.position).normalized;
-        transform.position += (Vector3)(_direction * (_stats.Speed * deltaTime));
+        transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
     }
 
     private void FlipSprite()
     {
-        if (!(_direction.x > 0))
+        if (!(_directionTowardPlayer.x > 0))
         {
             _renderer.flipX = true;
         }
@@ -57,15 +87,23 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         Debug.Log($"{gameObject.name} despawned");
     }
     
-    public void TakeDamage(float damage)
+    public void TakeDamage(DamagingContext ctx)
     {
         if (!IsAlive) return;
-        _stats.Health -= damage;
-        Debug.Log($"{gameObject.name} dealt {damage} damage to {_stats.Health}");
+        _stats.Health -= ctx.Damage;
+        Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_stats.Health}");
+        
+        Flash();
+        ApplyKnockback(ctx.Knockback);
         if(_stats.Health <= 0)
         {
             ObjectPoolingManager.Instance.DespawnObject(gameObject,ObjectPoolingManager.PoolType.Enemy);
             IsAlive = false;
         }
+    }
+    private void ApplyKnockback(float knockback)
+    {
+        transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
+        Debug.Log((Vector3)(_directionTowardPlayer) * knockback);
     }
 }

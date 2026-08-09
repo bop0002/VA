@@ -51,11 +51,11 @@ public class PlayerView : MonoBehaviour,IDamageable
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(DamagingContext ctx)
     {
         if (!IsAlive) return;
-        Stats.Health -= damage;
-        Debug.Log($"{gameObject.name} dealt {damage} damage to {Stats.Health}");
+        Stats.Health -= ctx.Damage;
+        //Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {Stats.Health}");
         if(Stats.Health <= 0)
         {
             Debug.Log("Player is dead");
