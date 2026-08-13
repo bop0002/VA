@@ -1,0 +1,676 @@
+fileFormatVersion: 2
+guid: 5d626510ff749b840a0accb78dec29c4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 373990891590175482
+    second: aurasprite_0
+  - first:
+      213: -8801704997303842872
+    second: aurasprite_1
+  - first:
+      213: 3426378152711882493
+    second: aurasprite_2
+  - first:
+      213: -7085793054613321351
+    second: aurasprite_3
+  - first:
+      213: 3714035015288521525
+    second: aurasprite_4
+  - first:
+      213: -3555308841466775810
+    second: aurasprite_5
+  - first:
+      213: 3675080335084725590
+    second: aurasprite_6
+  - first:
+      213: -5735308078678955613
+    second: aurasprite_7
+  - first:
+      213: 2445004665173443661
+    second: aurasprite_8
+  - first:
+      213: 6106973151172002363
+    second: aurasprite_9
+  - first:
+      213: -3994496190002608160
+    second: aurasprite_10
+  - first:
+      213: -9175091360433141941
+    second: aurasprite_11
+  - first:
+      213: -2867050583484217663
+    second: aurasprite_12
+  - first:
+      213: 5462252215021275373
+    second: aurasprite_13
+  - first:
+      213: 6295402107352463471
+    second: aurasprite_14
+  - first:
+      213: 3843841413426796972
+    second: aurasprite_15
+  - first:
+      213: 7886068770344372441
+    second: aurasprite_16
+  - first:
+      213: -3739633168640778319
+    second: aurasprite_17
+  - first:
+      213: -6966843776044131321
+    second: aurasprite_18
+  - first:
+      213: 2945710168002809318
+    second: aurasprite_19
+  - first:
+      213: 3263052409381037913
+    second: aurasprite_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: aurasprite_0
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 543
+        width: 463
+        height: 404
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: afac6720cbea03500800000000000000
+      internalID: 373990891590175482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_1
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 549
+        width: 535
+        height: 467
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c78ce930ff0ad580800000000000000
+      internalID: -8801704997303842872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_2
+      rect:
+        serializedVersion: 2
+        x: 976
+        y: 943
+        width: 31
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df60d82b6c0fc8f20800000000000000
+      internalID: 3426378152711882493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_3
+      rect:
+        serializedVersion: 2
+        x: 1210
+        y: 701
+        width: 279
+        height: 293
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 979c7db42c43aad90800000000000000
+      internalID: -7085793054613321351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_4
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 817
+        width: 57
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53382a92b27ea8330800000000000000
+      internalID: 3714035015288521525
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_5
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 795
+        width: 19
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef6319d027109aec0800000000000000
+      internalID: -3555308841466775810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_6
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 749
+        width: 70
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 655afb5e712800330800000000000000
+      internalID: 3675080335084725590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_7
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 707
+        width: 78
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a9a9ec70b71860b0800000000000000
+      internalID: -5735308078678955613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_8
+      rect:
+        serializedVersion: 2
+        x: 1150
+        y: 717
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4406dde9c66ee120800000000000000
+      internalID: 2445004665173443661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_9
+      rect:
+        serializedVersion: 2
+        x: 1160
+        y: 545
+        width: 201
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b32847099b350c450800000000000000
+      internalID: 6106973151172002363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_10
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 685
+        width: 25
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e74e3201e2b098c0800000000000000
+      internalID: -3994496190002608160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_11
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 703
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4780a7f4078ba080800000000000000
+      internalID: -9175091360433141941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_12
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 685
+        width: 38
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c6c8524fa03638d0800000000000000
+      internalID: -2867050583484217663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_13
+      rect:
+        serializedVersion: 2
+        x: 1352
+        y: 631
+        width: 45
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de80fe50371ddcb40800000000000000
+      internalID: 5462252215021275373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_14
+      rect:
+        serializedVersion: 2
+        x: 1456
+        y: 623
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f683df6bcd2cd5750800000000000000
+      internalID: 6295402107352463471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_15
+      rect:
+        serializedVersion: 2
+        x: 1008
+        y: 615
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca95d346661185530800000000000000
+      internalID: 3843841413426796972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_16
+      rect:
+        serializedVersion: 2
+        x: 1370
+        y: 535
+        width: 93
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d88da2b3c1f07d60800000000000000
+      internalID: 7886068770344372441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_17
+      rect:
+        serializedVersion: 2
+        x: 1478
+        y: 579
+        width: 37
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bfd5e052772a1cc0800000000000000
+      internalID: -3739633168640778319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_18
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 82
+        width: 411
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70c9f336f7cc05f90800000000000000
+      internalID: -6966843776044131321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_19
+      rect:
+        serializedVersion: 2
+        x: 488
+        y: 23
+        width: 535
+        height: 523
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ed401f6ac341e820800000000000000
+      internalID: 2945710168002809318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: aurasprite_20
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 19
+        width: 485
+        height: 501
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 957a3a0c0e0b84d20800000000000000
+      internalID: 3263052409381037913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      aurasprite_0: 373990891590175482
+      aurasprite_1: -8801704997303842872
+      aurasprite_10: -3994496190002608160
+      aurasprite_11: -9175091360433141941
+      aurasprite_12: -2867050583484217663
+      aurasprite_13: 5462252215021275373
+      aurasprite_14: 6295402107352463471
+      aurasprite_15: 3843841413426796972
+      aurasprite_16: 7886068770344372441
+      aurasprite_17: -3739633168640778319
+      aurasprite_18: -6966843776044131321
+      aurasprite_19: 2945710168002809318
+      aurasprite_2: 3426378152711882493
+      aurasprite_20: 3263052409381037913
+      aurasprite_3: -7085793054613321351
+      aurasprite_4: 3714035015288521525
+      aurasprite_5: -3555308841466775810
+      aurasprite_6: 3675080335084725590
+      aurasprite_7: -5735308078678955613
+      aurasprite_8: 2445004665173443661
+      aurasprite_9: 6106973151172002363
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

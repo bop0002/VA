@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -4656465494039794266}
   - component: {fileID: 3999761920500838993}
   - component: {fileID: 4096027771869087092}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Knife
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -271936383
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -1988313005, guid: 6b90931aedc40134ca8103e5d51f34f1, type: 3}

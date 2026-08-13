@@ -18,13 +18,13 @@ MonoBehaviour:
   Prefab: {fileID: 5190081236998357394, guid: b66a33848bda070469de79af96a80848, type: 3}
   Levels:
   - Speed: 1
-    Damage: 1
+    Damage: 20
     Pierce: 1
     Size: 1
     Duration: 1.5
-    Cooldown: 2
+    Cooldown: 1
     ProjectileCount: 1
-    Knockback: 5
+    Knockback: 1
     UpgradeDescription: 
   - Speed: 1
     Damage: 1.2

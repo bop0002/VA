@@ -5,23 +5,35 @@ public class Projectile : MonoBehaviour,IPoolable
 
     protected Vector2 Direction;
     protected ProjectileStats Stats;
-
+    protected Vector3 LocalScale;
+    
     protected float LifeTimeLeft;
     protected int PierceLeft;
 
     protected bool _isAlive;
-
+    
+    
     public virtual void Init(ProjectileSpawnInfo info)
     {
         Direction = info.Direction.sqrMagnitude > 0.0001f ? info.Direction.normalized : Vector2.right ;
         Stats = info.Stats;
         LifeTimeLeft = Stats.Duration;
         PierceLeft = Mathf.Max(1, Stats.Pierce);
-        this.transform.localScale = new Vector3(Stats.Size, Stats.Size, Stats.Size);
+        LocalScale = transform.localScale;
         _isAlive = true;
 
     }
-
+    
+    public virtual void ApplyStats(ProjectileSpawnInfo info)
+    {
+        Direction = info.Direction.sqrMagnitude > 0.0001f ? info.Direction.normalized : Vector2.right ;
+        Stats = info.Stats;
+        LifeTimeLeft = Stats.Duration;
+        PierceLeft = Mathf.Max(1, Stats.Pierce);
+        transform.localScale = LocalScale * Stats.Size;
+        _isAlive = true;
+    }
+    
     protected virtual void Update()
     {
         if (!_isAlive) return;
@@ -45,7 +57,7 @@ public class Projectile : MonoBehaviour,IPoolable
     {
         if (!_isAlive) return;
 
-        if(!other.gameObject.TryGetComponent(out IDamageable damageable) || other.CompareTag("Player") )
+        if(!other.gameObject.TryGetComponent(out IDamageable damageable))
         {
             return;
         }

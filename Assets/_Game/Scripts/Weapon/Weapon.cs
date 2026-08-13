@@ -42,7 +42,7 @@ public abstract class Weapon
             size: levelStats.Size * playerStats.ProjectileSize,
             duration: levelStats.Duration + playerStats.ProjectileDuration,
             knockback: levelStats.Knockback,
-            damageTickInterval: GetCooldown(playerStats));
+            damageTickInterval : GetCooldown(playerStats));
     }
 
     protected int GetProjectileCount(PlayerStats playerStats)

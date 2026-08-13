@@ -4,58 +4,98 @@ using UnityEngine;
 public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura va orbit:???
 {
 
-    protected Transform _owner;
-    protected List<IDamageable>  _damageables;
-
-    protected float DamageTick;
+    private Transform _owner;
     
+    private Collider2D[] _hits = new Collider2D[64];
+    [SerializeField] private LayerMask _enemyLayer;
+    private Dictionary<IDamageable, float> _hitCooldown;
+    private float DamageTick;
+    private CircleCollider2D  _collider;
+    private Vector2 _center;
+    private float radius;
+    private int hitCount;
+    private float currentTime;
+    private float deltaTime;
+    private List<IDamageable> _toRemoveList;
     private void Awake()
     {
-        _damageables = new List<IDamageable>();
+        _collider = GetComponent<CircleCollider2D>();
+        _hitCooldown = new Dictionary<IDamageable, float>();
+        _toRemoveList = new List<IDamageable>();
     }
     
     protected override void Update()
     {
         if (!_isAlive) return;
-        float deltaTime = Time.deltaTime;
+        deltaTime = Time.deltaTime;
+        currentTime = Time.time;
         
         DamageTick -= deltaTime;
+        Move();
         if(DamageTick <= 0f)
         {
             DamageInRange();
         }
-        
-        Move(deltaTime);
+        CleanUp();
     }
 
     private void DamageInRange()
     {
-        for (int i = _damageables.Count - 1; i >= 0; i--)
+        _center = (Vector2)transform.position + _collider.offset;
+        radius = _collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
+        hitCount = Physics2D.OverlapCircleNonAlloc(_center, radius ,_hits,_enemyLayer);
+        for (int i = 0; i<hitCount; i++)
         {
-            _damageables[i].TakeDamage(new DamagingContext(Stats.Damage,Stats.Knockback));
-            ///for each thi 2 enemy tro len lai crash???
+            if(_hits[i].TryGetComponent(out IDamageable target)) TryDamage(target);
         }
         DamageTick = Stats.DamageTickInterval;
     }
 
+    private void TryDamage(IDamageable target)
+    {
+        if(_hitCooldown.TryGetValue(target,out float nextHit) && currentTime < nextHit) return;
+        
+        _hitCooldown[target] = currentTime+Stats.DamageTickInterval;
+        target.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback),()=>{_toRemoveList.Add(target);});
+        
+    }
+    
+    private void CleanUp()
+    {
+        foreach(var damageable in _hitCooldown)
+        {
+            if (damageable.Value <= currentTime)
+            {
+                _toRemoveList.Add(damageable.Key);
+            }
+        }
+        
+        foreach (IDamageable damageable in _toRemoveList)
+        {
+            _hitCooldown.Remove(damageable);
+        }
+        
+        _toRemoveList.Clear();
+        
+    }
+    
+    
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        float actualRadius = radius;
+        Gizmos.DrawWireSphere(_center, actualRadius);
+    }
+    
     public override void Init(ProjectileSpawnInfo info)
     {
         base.Init(info);
         DamageTick = 0f;
         _owner = info.Origin;
     }
-
-    public void ApplyStats(ProjectileSpawnInfo info)
-    {
-        Direction = info.Direction.sqrMagnitude > 0.0001f ? info.Direction.normalized : Vector2.right ;
-        Stats = info.Stats;
-        LifeTimeLeft = Stats.Duration;
-        PierceLeft = Mathf.Max(1, Stats.Pierce);
-        transform.localScale = new Vector3(Stats.Size, Stats.Size, Stats.Size);
-        _isAlive = true;
-    }
     
-    protected override void Move(float deltaTime)
+    
+    protected void Move()
     {
         transform.position = _owner.position;
     }
@@ -63,31 +103,14 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         if (!_isAlive) return;
-        if(!other.gameObject.TryGetComponent(out IDamageable damageable) || other.CompareTag("Player"))
-        {
-            return;
-        }
-
-        damageable.TakeDamage(new DamagingContext(Stats.Damage,Stats.Knockback)); //spammble
-        _damageables.Add(damageable); //cheking for mutiple collider per target?
+        if(other.TryGetComponent(out IDamageable target))TryDamage(target);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!_isAlive) return;
-        if(!other.gameObject.TryGetComponent(out IDamageable damageable)||other.CompareTag("Player"))
-        {
-            return;
-        }
-        _damageables.Remove(damageable);
-        
+        return;
     }
     
-    public override void OnDespawn()
-    {
-        base.OnDespawn();
-        _damageables.Clear();
-    }
 
 
 

@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyData _data; // temp;
     [SerializeField] private int testEnemySpawn;
     private List<EnemyView> _enemies;
-
+    private float _deltaTime;
     private void Start()
     {
         _enemies = new List<EnemyView>();
@@ -31,17 +31,16 @@ public class EnemyController : MonoBehaviour
     
     private void Update()
     {
-        for (int i = 0; i < _enemies.Count; i++)
+        _deltaTime  = Time.deltaTime;
+        for (int i = _enemies.Count-1; i >=0;i--)
         {
             if (!_enemies[i].IsAlive)
             {
-                _enemies.RemoveAt(i);
+                _enemies[i] =  _enemies[^1];
+                _enemies.RemoveAt( _enemies.Count-1); //hoac la ban event
                 continue;
             }
-            else
-            {
-                _enemies[i].Tick(Time.deltaTime);
-            }
+            _enemies[i].Tick(Time.deltaTime);
         }
     }
 }

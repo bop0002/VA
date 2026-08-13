@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -87,23 +88,24 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         Debug.Log($"{gameObject.name} despawned");
     }
     
-    public void TakeDamage(DamagingContext ctx)
+    public void TakeDamage(DamagingContext ctx,Action onDead)
     {
         if (!IsAlive) return;
         _stats.Health -= ctx.Damage;
-        Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_stats.Health}");
+        /*Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_stats.Health}");*/
         
         Flash();
         ApplyKnockback(ctx.Knockback);
         if(_stats.Health <= 0)
         {
-            ObjectPoolingManager.Instance.DespawnObject(gameObject,ObjectPoolingManager.PoolType.Enemy);
             IsAlive = false;
+            ObjectPoolingManager.Instance.DespawnObject(gameObject,ObjectPoolingManager.PoolType.Enemy);
+            onDead?.Invoke();
         }
     }
     private void ApplyKnockback(float knockback)
     {
         transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
-        Debug.Log((Vector3)(_directionTowardPlayer) * knockback);
+        /*Debug.Log((Vector3)(_directionTowardPlayer) * knockback);*/
     }
 }

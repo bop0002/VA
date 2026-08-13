@@ -12,9 +12,9 @@ TagManager:
   - Background
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - Player
+  - PlayerProjectile
   - 
   - 
   - 

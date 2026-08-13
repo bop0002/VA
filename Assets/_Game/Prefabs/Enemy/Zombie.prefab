@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4808852403926901823}
   - component: {fileID: 3203772291091607168}
   - component: {fileID: 6622914434305046900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60977afa40adcf84ea2f0e3cefb35f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyView
+  flashDuration: 0.1
 --- !u!61 &3203772291091607168
 BoxCollider2D:
   m_ObjectHideFlags: 0
