@@ -9,6 +9,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private Vector2 _directionTowardPlayer;
     private Transform _player;
     private SpriteRenderer _renderer;
+    private Rigidbody2D _rigidbody2D;
     
     //DEBUG NOT FINAL VFX GET HIT
     [SerializeField] private float flashDuration = 0.1f;
@@ -40,6 +41,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         
         originalMaterial = _renderer.material;
         flashMaterial = new Material(Shader.Find("GUI/Text Shader"));
@@ -63,7 +65,8 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
 
     private void Move(float deltaTime)
     {
-        transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
+        //transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
+        _rigidbody2D.linearVelocity = _directionTowardPlayer.normalized * _stats.Speed;
     }
 
     private void FlipSprite()
@@ -105,7 +108,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     }
     private void ApplyKnockback(float knockback)
     {
-        transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
+        //transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
         /*Debug.Log((Vector3)(_directionTowardPlayer) * knockback);*/
     }
 }

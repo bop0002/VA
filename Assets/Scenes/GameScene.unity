@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _playerView: {fileID: 1044140623}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
-  testEnemySpawn: 100
+  testEnemySpawn: 1000
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,6 +622,14 @@ PrefabInstance:
       propertyPath: 'startingWeapons.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: 3b5ae54e942cc004f9791d5531d261c0, type: 2}
+    - target: {fileID: 6835561668952475305, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
+      propertyPath: m_Mass
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6835561668952475305, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 0503f1c2528c9a444a64e0a783981847, type: 2}
     - target: {fileID: 8526708868334093015, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
