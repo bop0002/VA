@@ -9,13 +9,11 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     private Collider2D[] _hits = new Collider2D[64];
     [SerializeField] private LayerMask _enemyLayer;
     private Dictionary<IDamageable, float> _hitCooldown;
-    private float DamageTick;
     private CircleCollider2D  _collider;
     private Vector2 _center;
     private float radius;
     private int hitCount;
     private float currentTime;
-    private float deltaTime;
     private List<IDamageable> _toRemoveList;
     private void Awake()
     {
@@ -27,15 +25,10 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     protected override void Update()
     {
         if (!_isAlive) return;
-        deltaTime = Time.deltaTime;
         currentTime = Time.time;
         
-        DamageTick -= deltaTime;
         Move();
-        if(DamageTick <= 0f)
-        {
-            DamageInRange();
-        }
+        DamageInRange();
         CleanUp();
     }
 
@@ -48,7 +41,6 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
         {
             if(_hits[i].TryGetComponent(out IDamageable target)) TryDamage(target);
         }
-        DamageTick = Stats.DamageTickInterval;
     }
 
     private void TryDamage(IDamageable target)
@@ -90,7 +82,6 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     public override void Init(ProjectileSpawnInfo info)
     {
         base.Init(info);
-        DamageTick = 0f;
         _owner = info.Origin;
     }
     
