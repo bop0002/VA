@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9080310749918861116}
   - component: {fileID: 4245185915553109508}
   - component: {fileID: -4656465494039794266}
-  - component: {fileID: 3999761920500838993}
   - component: {fileID: 4096027771869087092}
+  - component: {fileID: 2435102582166849196}
   m_Layer: 8
   m_Name: Knife
   m_TagString: Untagged
@@ -121,18 +121,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &3999761920500838993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067889594832110098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a99071063c1ab94fbab888578f9df1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Projectile
 --- !u!60 &4096027771869087092
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +176,15 @@ PolygonCollider2D:
       - {x: -0.12291479, y: 0.14484918}
       - {x: -0.34408098, y: -0.011984587}
   m_UseDelaunayMesh: 1
+--- !u!114 &2435102582166849196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067889594832110098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a30ce5e5a0ab7ef4db220caee558a396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovingProjectile

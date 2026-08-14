@@ -22,12 +22,10 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
         _toRemoveList = new List<IDamageable>();
     }
     
-    protected override void Update()
+    protected void Update()
     {
-        if (!_isAlive) return;
         currentTime = Time.time;
         
-        Move();
         DamageInRange();
         CleanUp();
     }
@@ -83,17 +81,13 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     {
         base.Init(info);
         _owner = info.Origin;
+        transform.SetParent(info.Origin);
     }
     
     
-    protected void Move()
-    {
-        transform.position = _owner.position;
-    }
 
-    protected override void OnTriggerEnter2D(Collider2D other)
+    protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_isAlive) return;
         if(other.TryGetComponent(out IDamageable target))TryDamage(target);
     }
 
