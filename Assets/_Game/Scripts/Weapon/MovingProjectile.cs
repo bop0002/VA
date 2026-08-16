@@ -40,7 +40,7 @@ public class MovingProjectile : Projectile
         Move(deltaTime);
     }
 
-    protected void Move(float deltaTime)
+    protected virtual void Move(float deltaTime)
     {
         transform.position += (Vector3)(Direction * (Stats.Speed * deltaTime));
     }
