@@ -18,14 +18,6 @@ public class MovingProjectile : Projectile
 
     }
     
-    public override void ApplyStats(ProjectileSpawnInfo info)
-    {
-        base.ApplyStats(info);
-        LifeTimeLeft = Stats.Duration;
-        PierceLeft = Mathf.Max(1, Stats.Pierce);
-        _isAlive = true;
-    }
-    
     protected virtual void Update()
     {
         if (!_isAlive) return;
@@ -59,14 +51,14 @@ public class MovingProjectile : Projectile
         if (PierceLeft <= 0) Despawn();
     }
 
-    protected void Despawn()
+    public void Despawn()
     {
         if (!_isAlive) return;
         _isAlive = false;
         ObjectPoolingManager.Instance.DespawnObject(this.gameObject,ObjectPoolingManager.PoolType.WeaponProjectile);
     }
 
-    protected override void OnDespawn()
+    public override void OnDespawn()
     {
         _isAlive = false;
     }

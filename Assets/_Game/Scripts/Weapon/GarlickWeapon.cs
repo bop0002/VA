@@ -13,12 +13,12 @@ public class GarlickWeapon : Weapon
 
     protected override void Fire(WeaponContext ctx)
     {
+        if (_isInitialized) return;
         ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
-        
         ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.Origin, stats);
         Quaternion rot = Quaternion.Euler(0f, 0f, 0f);
         
-        if (_isInitialized == false)
+        if (!_isInitialized)
         {
             Vector3 spawnPos = ctx.Origin.position;
             
@@ -28,10 +28,6 @@ public class GarlickWeapon : Weapon
             _cirleProjectile = projectile;
             _cirleProjectile.Init(info);
             _isInitialized = true;
-        }
-        if(_cirleProjectile != null)
-        {
-            _cirleProjectile.ApplyStats(info); //later refactor ??? constantly update new info???
         }
     }
 }

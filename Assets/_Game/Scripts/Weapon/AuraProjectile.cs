@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura va orbit:???
 {
-
-    private Transform _owner;
-    
-    private Collider2D[] _hits = new Collider2D[64];
+    private static readonly Collider2D[] _hits = new Collider2D[64];
     [SerializeField] private LayerMask _enemyLayer;
     private Dictionary<IDamageable, float> _hitCooldown;
     private CircleCollider2D  _collider;
@@ -73,14 +70,12 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        float actualRadius = radius;
-        Gizmos.DrawWireSphere(_center, actualRadius);
+        Gizmos.DrawWireSphere(_center, radius);
     }
     
     public override void Init(ProjectileSpawnInfo info)
     {
-        base.Init(info);
-        _owner = info.Origin;
+        base.Init(info); 
         transform.SetParent(info.Origin);
     }
     

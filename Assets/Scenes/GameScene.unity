@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _playerView: {fileID: 1044140623}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
-  testEnemySpawn: 1000
+  testEnemySpawn: 10
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +274,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 0.9
+  orthographic size: 5.625
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -332,9 +332,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
   m_ComponentVersion: 1
-  m_AssetsPPU: 100
-  m_RefResolutionX: 320
-  m_RefResolutionY: 180
+  m_AssetsPPU: 32
+  m_RefResolutionX: 640
+  m_RefResolutionY: 360
   m_CropFrame: 0
   m_GridSnapping: 0
   m_FilterMode: 0
@@ -608,7 +608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6037525751418312896, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
       propertyPath: startingWeapons.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6037525751418312896, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
       propertyPath: 'startingWeapons.Array.data[0]'
@@ -617,7 +617,7 @@ PrefabInstance:
     - target: {fileID: 6037525751418312896, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
       propertyPath: 'startingWeapons.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 3b5ae54e942cc004f9791d5531d261c0, type: 2}
+      objectReference: {fileID: 11400000, guid: 8dea3e4bcb847eb448b51c38dfbdc861, type: 2}
     - target: {fileID: 6835561668952475305, guid: 5ce550fceaaab1745808b20d515548b9, type: 3}
       propertyPath: m_Mass
       value: 50
