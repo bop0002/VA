@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   _playerView: {fileID: 1044140623}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
-  testEnemySpawn: 10
+  testEnemySpawn: 1000
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
