@@ -20,3 +20,4 @@ MonoBehaviour:
     Health: 1000
     Speed: 3
     Damage: 10
+    BodyRadius: 0.5

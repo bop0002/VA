@@ -7,10 +7,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private  PlayerView _playerView;
     [SerializeField] private EnemyData _data; // temp;
     [SerializeField] private int testEnemySpawn;
+    SpatialHashGrid _grid;
     private List<EnemyView> _enemies;
+
+    private List<EnemyView> _neighborCacheList;
     private float _deltaTime;
     private void Start()
     {
+        _grid = new SpatialHashGrid(1f);
+        _neighborCacheList = new List<EnemyView>();
         _enemies = new List<EnemyView>();
         for (int i = 0; i < testEnemySpawn; i++)
         {
@@ -28,19 +33,32 @@ public class EnemyController : MonoBehaviour
         enemyView.Init(_data, context);
         _enemies.Add(enemyView);
     }
+
+    private void OnDrawGizmos()
+    {
+        if(_grid == null) return;
+        _grid.DrawGizmos();
+    }
     
     private void Update()
     {
+        _grid.ClearBuckets();
         _deltaTime  = Time.deltaTime;
         for (int i = _enemies.Count-1; i >=0;i--)
         {
             if (!_enemies[i].IsAlive)
             {
                 _enemies[i] =  _enemies[^1];
-                _enemies.RemoveAt( _enemies.Count-1); //hoac la ban event
-                continue;
+                _enemies.RemoveAt( _enemies.Count-1); //hoac la ban event ;
             }
-            _enemies[i].Tick(Time.deltaTime);
+        }
+
+        foreach (var enemy in _enemies)
+        {
+            _neighborCacheList.Clear();
+            _grid.AddToCell(enemy);
+            _grid.GetNeighbours(enemy, ref _neighborCacheList);
+            enemy.Tick(Time.deltaTime,_neighborCacheList);
         }
     }
 }

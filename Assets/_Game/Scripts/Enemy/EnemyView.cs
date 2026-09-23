@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour,IPoolable,IDamageable
@@ -9,7 +11,6 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private Vector2 _directionTowardPlayer;
     private Transform _player;
     private SpriteRenderer _renderer;
-    private Rigidbody2D _rigidbody2D;
     
     //DEBUG NOT FINAL VFX GET HIT
     [SerializeField] private float flashDuration = 0.1f;
@@ -41,7 +42,6 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
-        _rigidbody2D = GetComponent<Rigidbody2D>();
         
         originalMaterial = _renderer.material;
         flashMaterial = new Material(Shader.Find("GUI/Text Shader"));
@@ -55,7 +55,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         IsAlive =  true;
     }
     
-    public void Tick(float deltaTime)
+    public void Tick(float deltaTime,List<EnemyView> neighbors)
     {
         if(!IsAlive) return;
         _directionTowardPlayer = ( _player.position - transform.position).normalized;
@@ -65,8 +65,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
 
     private void Move(float deltaTime)
     {
-        //transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
-        _rigidbody2D.linearVelocity = _directionTowardPlayer.normalized * _stats.Speed;
+        transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
     }
 
     private void FlipSprite()
@@ -106,6 +105,18 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
             onDead?.Invoke();
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(transform.position,_stats.BodyRadius);
+    }
+
+    private void ApplyOverlapForce(List<EnemyView> neighbors)
+    {
+        
+    }
+    
     private void ApplyKnockback(float knockback)
     {
         //transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
