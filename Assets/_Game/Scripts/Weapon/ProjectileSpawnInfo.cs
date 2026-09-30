@@ -3,13 +3,13 @@ using UnityEngine;
 public struct ProjectileSpawnInfo
 {
     public Vector2 Direction;
-    public Transform Origin;
+    public Vector3 PlayerPosition;
     public ProjectileStats Stats;
 
-    public ProjectileSpawnInfo(Vector2 direction, Transform origin, ProjectileStats stats)
+    public ProjectileSpawnInfo(Vector2 direction, Vector3 position, ProjectileStats stats)
     {
         Direction = direction;
-        Origin = origin;
+        PlayerPosition = position;
         Stats = stats;
     }
 

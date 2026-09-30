@@ -5,8 +5,9 @@ using Vector2 = UnityEngine.Vector2;
 
 public class PlayerView : MonoBehaviour,IDamageable
 {
-    public Vector2 moveDirection { get; private set; }
-    public Vector2 lastMoveDirection { get; private set; }
+    public Vector3 Position => transform.position;
+    public Vector2 MoveDirection { get; private set; }
+    public Vector2 LastMoveDirection { get; private set; }
     [SerializeField] private InputReader  _inputReader; //Later refactor
     private Vector2 currentVelocity;
     [SerializeField] private float moveSpeed = 5;
@@ -19,7 +20,7 @@ public class PlayerView : MonoBehaviour,IDamageable
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        lastMoveDirection = Vector2.right;
+        LastMoveDirection = Vector2.right;
     }
     
     public void InitStat(Player player)
@@ -42,7 +43,6 @@ public class PlayerView : MonoBehaviour,IDamageable
     
     private void FixedUpdate()
     {
-        
         if (_rigidbody2D.linearVelocity != currentVelocity)
         {
             _rigidbody2D.linearVelocity = currentVelocity;
@@ -63,12 +63,12 @@ public class PlayerView : MonoBehaviour,IDamageable
 
     private void HandleMove(Vector2 direction)
     {
-        moveDirection = new Vector2(direction.x, direction.y);
-        if (moveDirection.sqrMagnitude > 0.0001f)
+        MoveDirection = new Vector2(direction.x, direction.y);
+        if (MoveDirection.sqrMagnitude > 0.0001f)
         {
-            lastMoveDirection = moveDirection;  //!!!
+            LastMoveDirection = MoveDirection;  //!!!
         }
-        //Debug.Log("lastMoveDirection:" + lastMoveDirection);
-        currentVelocity = new Vector2(moveSpeed * moveDirection.x, moveSpeed * moveDirection.y);
+        //Debug.Log("LastMoveDirection:" + LastMoveDirection);
+        currentVelocity = new Vector2(moveSpeed * MoveDirection.x, moveSpeed * MoveDirection.y);
     }
 }

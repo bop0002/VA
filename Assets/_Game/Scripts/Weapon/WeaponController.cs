@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public class WeaponController
 {
-    [SerializeField] private PlayerView _playerView;
-    [SerializeField] private List<WeaponData>  startingWeapons;
+    private PlayerController _playerController;
+    private List<WeaponData>  _startingWeapons;
     private List<Weapon> _weapons = new List<Weapon>();
 
     private Player _player;
@@ -12,11 +12,18 @@ public class WeaponController : MonoBehaviour
     
     public IReadOnlyList<Weapon> Weapons => _weapons; //???
 
+    public WeaponController(PlayerController playerController, List<WeaponData> startingWeapons)
+    {
+        _playerController = playerController;
+        _startingWeapons = startingWeapons;
+        Init(_playerController.GetPlayer());
+    }
+    
     public void Init(Player owner)
     {
         _player = owner;
         _weapons.Clear();
-        foreach (WeaponData data in startingWeapons)
+        foreach (WeaponData data in _startingWeapons)
         {
             if (data != null) Acquire(data);
         }
@@ -35,14 +42,14 @@ public class WeaponController : MonoBehaviour
         _weapons.Add(data.CreateRunTime());
     }
     
-    void Update()
+    public void Tick(float dt)
     {
         if (!_initialized)
         {
             return;
         }
-        WeaponContext ctx = new WeaponContext(_playerView.transform, _playerView.lastMoveDirection,_player.Stats);
-        float deltaTime = Time.deltaTime;
+        WeaponContext ctx = new WeaponContext(_playerController.PlayerPosition,_playerController.LastMoveDirection,_player.Stats);
+        float deltaTime = dt;
         for (int i = 0; i < _weapons.Count; i++)
         {
             _weapons[i].Tick(deltaTime,ctx);

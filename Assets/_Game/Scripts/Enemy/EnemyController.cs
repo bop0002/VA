@@ -1,48 +1,53 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController 
 {
-    [SerializeField] private  PlayerView _playerView;
-    [SerializeField] private EnemyData _data; // temp;
-    [SerializeField] private int testEnemySpawn;
-    SpatialHashGrid _grid;
+    private PlayerController _playerController;
+    private EnemyData _enemyData; // temp;
+    private int _testEnemySpawn;
+    SpatialHashGrid _spatialHashGrid;
     private List<EnemyView> _enemies;
 
     private List<EnemyView> _neighborCacheList; //Tam thoi work voi 1 cell size voi lon hon thi ko bic
     private float _deltaTime;
-    private void Start()
+
+    public EnemyController(PlayerController playerController,EnemyData enemyData,SpatialHashGrid spatialHashGrid,int testEnemySpawn)
     {
-        _grid = new SpatialHashGrid(1f);
+        _playerController = playerController;
+        _enemyData = enemyData;
+        _spatialHashGrid = spatialHashGrid;
         _neighborCacheList = new List<EnemyView>();
         _enemies = new List<EnemyView>();
-        for (int i = 0; i < testEnemySpawn; i++)
+        _testEnemySpawn = testEnemySpawn;
+        for (int i = 0; i < _testEnemySpawn; i++)
         {
-            TestInit();
+            TestSpawn();
         }
     }
     
-    private void TestInit()
+    private void TestSpawn()
     {
         Vector3 pos = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
         Quaternion rot = Quaternion.identity;
-        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(_data.Prefab, pos, rot,
+        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(_enemyData.Prefab, pos, rot,
             ObjectPoolingManager.PoolType.Enemy);
-        EnemySpawnContext context = new EnemySpawnContext(_playerView.transform);
-        enemyView.Init(_data, context);
+        EnemySpawnContext context = new EnemySpawnContext(_playerController.PlayerPosition);
+        enemyView.Init(_enemyData, context);
         _enemies.Add(enemyView);
     }
 
-    private void OnDrawGizmos()
+    public void DrawGizmos()
     {
-        if(_grid == null) return;
-        _grid.DrawGizmos();
+        if(_spatialHashGrid == null) return;
+        _spatialHashGrid.DrawGizmos();
     }
     
-    private void Update()
+    public void Tick(float dt)
     {
-        _grid.ClearBuckets();
-        _deltaTime  = Time.deltaTime;
+        _spatialHashGrid.ClearBuckets();
+        _deltaTime = dt;
         for (int i = _enemies.Count-1; i >=0;i--)
         {
             if (!_enemies[i].IsAlive)
@@ -54,14 +59,14 @@ public class EnemyController : MonoBehaviour
 
         foreach (var enemy in _enemies)
         {
-            _grid.AddToCell(enemy);
+            _spatialHashGrid.AddToCell(enemy);
         }
         //Nen tinh het overlapForce roi moi apply ?
         foreach(var enemy in _enemies)
         {
             _neighborCacheList.Clear();
-            _grid.GetNeighbours(enemy,ref _neighborCacheList);
-            enemy.Tick(_deltaTime,_neighborCacheList);
+            _spatialHashGrid.GetNeighbours(enemy,ref _neighborCacheList);
+            enemy.Tick(_deltaTime,_neighborCacheList,_playerController.PlayerPosition);
         }
     }
 }

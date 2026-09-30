@@ -2,13 +2,13 @@ using UnityEngine;
 
 public readonly struct WeaponContext
 {
-    public readonly Transform Origin;
+    public readonly Vector3 PlayerPosition;
     public readonly Vector2 Direction;
     public readonly PlayerStats PlayerStats;
     
-    public WeaponContext(Transform origin, Vector2 direction, PlayerStats stats)
+    public WeaponContext(Vector3 playerPosition, Vector2 direction, PlayerStats stats)
     {
-        Origin = origin;
+        PlayerPosition = playerPosition;
         Direction = direction;
         PlayerStats = stats;
     }

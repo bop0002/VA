@@ -2,10 +2,10 @@ using UnityEngine;
 
 public struct EnemySpawnContext
 {
-    public Transform PlayerOrigin;
+    public Vector3 PlayerPosition;
 
-    public EnemySpawnContext(Transform origin)
+    public EnemySpawnContext(Vector3 playerPosition)
     {
-        PlayerOrigin = origin;
+        PlayerPosition = playerPosition;
     }
 }

@@ -14,13 +14,13 @@ public class KnifeWeapon : Weapon
         ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
         int count = GetProjectileCount(ctx.PlayerStats);
 
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.Origin, stats);
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
         Quaternion rot = RotationFromDirection(ctx.Direction);
 
         for (int i = 0; i < count; i++)
         {
             Vector3 offset = (Vector3)(ctx.Direction.normalized * (i * _knifeData.SpawnSpacing));
-            Vector3 spawnPos = ctx.Origin.position -  offset;
+            Vector3 spawnPos = ctx.PlayerPosition -  offset;
 
             MovingProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<MovingProjectile>(Data.Prefab, spawnPos, rot,
                 ObjectPoolingManager.PoolType.WeaponProjectile);

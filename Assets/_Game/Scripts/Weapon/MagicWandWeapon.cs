@@ -14,12 +14,12 @@ public class MagicWandWeapon : Weapon
         ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
         int count = GetProjectileCount(ctx.PlayerStats);
 
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.Origin, stats);
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
         Quaternion rot = RotationFromDirection(ctx.Direction);
 
         for (int i = 0; i < count; i++)
         {
-            Vector3 spawnPos = ctx.Origin.position;//de tam :3
+            Vector3 spawnPos = ctx.PlayerPosition;//de tam :3
 
             HomingProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<HomingProjectile>(Data.Prefab, spawnPos, rot,
                 ObjectPoolingManager.PoolType.WeaponProjectile);

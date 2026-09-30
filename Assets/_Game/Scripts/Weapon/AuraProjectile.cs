@@ -23,11 +23,16 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     protected void Update()
     {
         currentTime = Time.time;
-        
+        UpdatePosition();
         DamageInRange();
         CleanUp();
     }
 
+    private void UpdatePosition()
+    {
+        transform.position = _center;
+    }
+    
     private void DamageInRange()
     {
         _center = (Vector2)transform.position;
@@ -74,10 +79,11 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
         Gizmos.DrawWireSphere(_center, radius);
     }
     
+    //TruyenVector3 thi update vi tri garlick kieu j duma
     public override void Init(ProjectileSpawnInfo info)
     {
         base.Init(info); 
-        transform.SetParent(info.Origin);
+        //transform.SetParent(info.PlayerPosition);//
     }
     
     

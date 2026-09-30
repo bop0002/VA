@@ -8,7 +8,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private EnemyData _data;
     private EnemyStats  _stats;
     private Vector2 _directionTowardPlayer;
-    private Transform _player;
+    private Vector3 _playerPosition;
     private SpriteRenderer _renderer;
     
     public float BodyRadius => _stats.BodyRadius;
@@ -62,14 +62,15 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         _data = data;
         _knockbackVelocity = Vector2.zero;
         _stats = data.Stats;
-        _player = context.PlayerOrigin; //hoi thua cho ca player nen chi truyen direction thoi ?
+        _playerPosition = context.PlayerPosition; //hoi thua cho ca player nen chi truyen direction thoi ?
         IsAlive =  true;
     }
     
-    public void Tick(float deltaTime,List<EnemyView> neighbors)
+    public void Tick(float deltaTime,List<EnemyView> neighbors,Vector3 playerPosition)
     {
         if(!IsAlive) return;
-        _directionTowardPlayer = ( _player.position - transform.position).normalized;
+        _playerPosition = playerPosition;
+        _directionTowardPlayer = ( _playerPosition - transform.position).normalized;
         Move(deltaTime,ComputeSeparation(neighbors));
         FlipSprite();
     }

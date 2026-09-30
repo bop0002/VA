@@ -15,12 +15,12 @@ public class GarlickWeapon : Weapon
     {
         if (_isInitialized) return;
         ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.Origin, stats);
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
         Quaternion rot = Quaternion.Euler(0f, 0f, 0f);
         
         if (!_isInitialized)
         {
-            Vector3 spawnPos = ctx.Origin.position;
+            Vector3 spawnPos = ctx.PlayerPosition;
             
             AuraProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<AuraProjectile>(Data.Prefab, spawnPos, rot,
                 ObjectPoolingManager.PoolType.WeaponProjectile);

@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController
 {
-    [SerializeField] private PlayerView playerView;
-
-    [SerializeField] private WeaponController weaponController;
-    [SerializeField] private PlayerStats playerStats;
+    private PlayerView _playerView;
+    private PlayerStats _playerStats;
     private Player _player;
-    private void Awake()
+    
+    public Vector3 PlayerPosition { get; private set; }
+    public Vector3 LastMoveDirection { get; private set; }
+    public PlayerController(PlayerView playerView, PlayerStats playerStats)
     {
-
         _player = new Player(playerStats);
+        _playerView = playerView;
         playerView.InitStat(_player);
-        weaponController.Init(_player);
     }
 
-    // Update is called once per frame
-    private void Update()
+    public void Tick(float dt)
     {
-        
+        PlayerPosition = _playerView.Position;
+        LastMoveDirection =_playerView.LastMoveDirection;
     }
+
+    public Player GetPlayer() =>  _player;
+
 }

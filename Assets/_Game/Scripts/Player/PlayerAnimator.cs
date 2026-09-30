@@ -15,7 +15,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Update()
     {
-        if (_playerView.moveDirection.x != 0 || _playerView.moveDirection.y != 0)
+        if (_playerView.MoveDirection.x != 0 || _playerView.MoveDirection.y != 0)
         {
             _animator.SetBool("Move", true);
             CheckSpirteDirection();
@@ -28,7 +28,7 @@ public class PlayerAnimator : MonoBehaviour
     
     private void CheckSpirteDirection()
     {
-        if(_playerView.lastMoveDirection.x <0)
+        if(_playerView.LastMoveDirection.x <0)
         {
             _spriteRenderer.flipX = true;
         }
