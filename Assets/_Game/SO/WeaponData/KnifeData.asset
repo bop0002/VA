@@ -24,7 +24,7 @@ MonoBehaviour:
     Duration: 2
     Cooldown: 1
     ProjectileCount: 1
-    Knockback: 2
+    Knockback: 1
     UpgradeDescription: Cac1
   - Speed: 20
     Damage: 2
@@ -33,6 +33,6 @@ MonoBehaviour:
     Duration: 2
     Cooldown: 2
     ProjectileCount: 1
-    Knockback: 0
+    Knockback: 1.2
     UpgradeDescription: Cac2
   SpawnSpacing: 0.35

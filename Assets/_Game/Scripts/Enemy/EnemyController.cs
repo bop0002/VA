@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class EnemyController : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class EnemyController : MonoBehaviour
     SpatialHashGrid _grid;
     private List<EnemyView> _enemies;
 
-    private List<EnemyView> _neighborCacheList;
+    private List<EnemyView> _neighborCacheList; //Tam thoi work voi 1 cell size voi lon hon thi ko bic
     private float _deltaTime;
     private void Start()
     {
@@ -55,10 +54,14 @@ public class EnemyController : MonoBehaviour
 
         foreach (var enemy in _enemies)
         {
-            _neighborCacheList.Clear();
             _grid.AddToCell(enemy);
-            _grid.GetNeighbours(enemy, ref _neighborCacheList);
-            enemy.Tick(Time.deltaTime,_neighborCacheList);
+        }
+        //Nen tinh het overlapForce roi moi apply ?
+        foreach(var enemy in _enemies)
+        {
+            _neighborCacheList.Clear();
+            _grid.GetNeighbours(enemy,ref _neighborCacheList);
+            enemy.Tick(_deltaTime,_neighborCacheList);
         }
     }
 }

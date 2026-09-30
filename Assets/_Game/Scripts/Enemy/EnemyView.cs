@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour,IPoolable,IDamageable
@@ -12,13 +11,24 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private Transform _player;
     private SpriteRenderer _renderer;
     
+    public float BodyRadius => _stats.BodyRadius;
+    
     //DEBUG NOT FINAL VFX GET HIT
     [SerializeField] private float flashDuration = 0.1f;
 
+    [ContextMenu("TestKnockback")]
+    private void TestKnockback() => ApplyKnockback(1f);
+    
     private Material originalMaterial;
     private Material flashMaterial;
     private Coroutine flashCoroutine;
-    
+
+    private Vector2 _knockbackVelocity;
+    private const float maxSeperationDeltaTime = 1 / 30f;
+    [SerializeField] private float _knockbackDecay = 5f;
+    [SerializeField] private float _maxKnockback = 4f;
+    [SerializeField] private  float overlapPushStr = 12f; //tmp
+    [SerializeField] private  float overlapMaxPushStr = 15f; 
     public void Flash()
     {
         if (flashCoroutine != null)
@@ -42,7 +52,7 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
-        
+
         originalMaterial = _renderer.material;
         flashMaterial = new Material(Shader.Find("GUI/Text Shader"));
     }
@@ -50,8 +60,9 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     public void Init(EnemyData data,EnemySpawnContext context)
     {
         _data = data;
+        _knockbackVelocity = Vector2.zero;
         _stats = data.Stats;
-        _player = context.PlayerOrigin;
+        _player = context.PlayerOrigin; //hoi thua cho ca player nen chi truyen direction thoi ?
         IsAlive =  true;
     }
     
@@ -59,13 +70,16 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     {
         if(!IsAlive) return;
         _directionTowardPlayer = ( _player.position - transform.position).normalized;
-        Move(deltaTime);
+        Move(deltaTime,ComputeSeparation(neighbors));
         FlipSprite();
     }
 
-    private void Move(float deltaTime)
+    private void Move(float deltaTime,Vector2 overlapPushForce)
     {
-        transform.position += (Vector3)(_directionTowardPlayer * (_stats.Speed * deltaTime));
+        float sepDt = Mathf.Min(deltaTime,maxSeperationDeltaTime);
+        Vector2 displacement = ((_directionTowardPlayer * _stats.Speed + _knockbackVelocity )* deltaTime)  + overlapPushForce * sepDt;
+        transform.position += (Vector3)displacement;
+        _knockbackVelocity *= Mathf.Exp(-_knockbackDecay * deltaTime);
     }
 
     private void FlipSprite()
@@ -112,14 +126,37 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         Gizmos.DrawSphere(transform.position,_stats.BodyRadius);
     }
 
-    private void ApplyOverlapForce(List<EnemyView> neighbors)
+    private Vector2 ComputeSeparation(List<EnemyView> neighbors)
     {
-        
+        //later to ispatailgrid???
+        Vector2 pushForce = Vector2.zero;
+        foreach(var other in neighbors)
+        {
+            if(other == this) continue;
+            Vector2 delta = transform.position - other.transform.position;
+            float distance = delta.magnitude;
+            float overlapRadius = other._stats.BodyRadius + _stats.BodyRadius;
+            if(distance < overlapRadius)
+            {
+                Vector2 pushDir = Vector2.zero;
+                if (distance < 0.001f)
+                {
+                    int myId = gameObject.GetInstanceID();
+                    int otherId = other.gameObject.GetInstanceID();
+                    pushDir = (myId > otherId) ? Vector2.right : Vector2.left;
+                }
+                else pushDir = delta/distance;
+                float overlapDepth = overlapRadius - distance;
+                pushForce += pushDir * (overlapDepth * overlapPushStr);
+            }
+        }
+        return Vector2.ClampMagnitude(pushForce,overlapMaxPushStr);
     }
+    
     
     private void ApplyKnockback(float knockback)
     {
-        //transform.position -= (Vector3)(_directionTowardPlayer) * knockback;
-        /*Debug.Log((Vector3)(_directionTowardPlayer) * knockback);*/
+        _knockbackVelocity -= _directionTowardPlayer * knockback * _knockbackDecay ;
+        _knockbackVelocity = Vector2.ClampMagnitude(_knockbackVelocity,_maxKnockback*_knockbackDecay);
     }
 }

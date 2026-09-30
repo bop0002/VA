@@ -6,15 +6,16 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     private static readonly Collider2D[] _hits = new Collider2D[64];
     [SerializeField] private LayerMask _enemyLayer;
     private Dictionary<IDamageable, float> _hitCooldown;
-    private CircleCollider2D  _collider;
     private Vector2 _center;
     private float radius;
     private int hitCount;
     private float currentTime;
     private List<IDamageable> _toRemoveList;
+
+    private readonly float collideRadius = 5f; // temp
+    
     private void Awake()
     {
-        _collider = GetComponent<CircleCollider2D>();
         _hitCooldown = new Dictionary<IDamageable, float>();
         _toRemoveList = new List<IDamageable>();
     }
@@ -29,9 +30,9 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
 
     private void DamageInRange()
     {
-        _center = (Vector2)transform.position + _collider.offset;
-        radius = _collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
-        hitCount = Physics2D.OverlapCircleNonAlloc(_center, radius ,_hits,_enemyLayer);
+        _center = (Vector2)transform.position;
+        radius = collideRadius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
+        hitCount = Physics2D.OverlapCircleNonAlloc(_center, radius ,_hits,_enemyLayer); // thay colldide GetRadius
         for (int i = 0; i<hitCount; i++)
         {
             if(_hits[i].TryGetComponent(out IDamageable target)) TryDamage(target);
@@ -80,16 +81,7 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     }
     
     
-
-    protected void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.TryGetComponent(out IDamageable target))TryDamage(target);
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        return;
-    }
+    
     
 
 

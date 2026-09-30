@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
@@ -8,7 +7,6 @@ public class PlayerView : MonoBehaviour,IDamageable
 {
     public Vector2 moveDirection { get; private set; }
     public Vector2 lastMoveDirection { get; private set; }
-    
     [SerializeField] private InputReader  _inputReader; //Later refactor
     private Vector2 currentVelocity;
     [SerializeField] private float moveSpeed = 5;
@@ -54,9 +52,9 @@ public class PlayerView : MonoBehaviour,IDamageable
     public void TakeDamage(DamagingContext ctx,Action onDead = null)
     {
         if (!IsAlive) return;
-        Stats.Health -= ctx.Damage;
-        Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {Stats.Health}");
-        if(Stats.Health <= 0)
+        _player.CurrentHealth -= ctx.Damage; //Tru vao stast ????
+        Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_player.CurrentHealth}");
+        if(_player.CurrentHealth <= 0)
         {
             Debug.Log("Player is dead");
             IsAlive = false;

@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class SpatialHashGrid
 {
     private readonly float _cellSize;
     private Dictionary<EnemyCell, List<EnemyView>> _buckets;
-    
+    private readonly float maxEnemyRadius = 0.5f; //tmp
+
+    private List<EnemyView> _candidates;
     
     public SpatialHashGrid(float cellSize)
     {
         _cellSize = cellSize;
+        _candidates = new List<EnemyView>();
         _buckets = new Dictionary<EnemyCell, List<EnemyView>> ();
     }
 
@@ -20,18 +22,69 @@ public class SpatialHashGrid
         return new  Vector3(cell.X * _cellSize, cell.Y * _cellSize, 0.0f);
     }
     
-    private EnemyCell WorldToCell(Transform transform)
+    private EnemyCell WorldToCell(Vector2 position)
     {
-        return new EnemyCell(Mathf.RoundToInt(transform.position.x/_cellSize),Mathf.RoundToInt(transform.position.y/_cellSize));    
+        return new EnemyCell(Mathf.RoundToInt(position.x/_cellSize),Mathf.RoundToInt(position.y/_cellSize));    
     }
-    
+    private EnemyCell WorldToCell(Transform transform) => WorldToCell((Vector2)transform.position);
     public List<EnemyView> GetEnemyInCell(Transform transform)
     {
         EnemyCell cell = WorldToCell(transform);
         if (!_buckets.TryGetValue(cell, out var list)) return null;
         return list;
     }
+    
+    private void CollectEnemyInBound(Vector2 min,Vector2 max,List<EnemyView> result)
+    {
+        EnemyCell cMin = WorldToCell(min - maxEnemyRadius * Vector2.one);
+        EnemyCell cMax = WorldToCell(max + maxEnemyRadius * Vector2.one);
 
+        for (int x = cMin.X; x <= cMax.X; x++)
+        {
+            for (int y = cMin.Y; y <= cMax.Y; y++)
+            {
+                if (_buckets.TryGetValue(new EnemyCell(x,y), out var enemies))
+                {
+                    result.AddRange(enemies);
+                }
+            }
+        }
+    }
+    
+    public void GetEnemyInRadius(Vector2 center, float radius, List<EnemyView> result)
+    {
+        result.Clear();
+        CollectEnemyInBound(center - Vector2.one * radius,center + Vector2.one * radius,_candidates);
+        foreach(var enemy in _candidates)
+        {
+            if(!enemy.IsAlive) continue;
+
+            float r = enemy.BodyRadius + radius;
+            if(r * r >= (center- (Vector2)enemy.transform.position).sqrMagnitude) result.Add(enemy);
+        }
+
+        _candidates.Clear();
+    }
+
+    public void GetEnemiesInBox(Vector2 center, Vector2 halfSize, Vector2 right, List<EnemyView> result)
+    {
+        result.Clear();
+        Vector2 up = new Vector2(-right.y, right.x);
+        Vector2 extent = new Vector2(Mathf.Abs(right.x)*halfSize.x + Mathf.Abs(up.x)*halfSize.y, Mathf.Abs(right.y)*halfSize.x+Mathf.Abs(up.y)* halfSize.y); // extent(extentx,extenty) hinh chu nhat cheo...
+        CollectEnemyInBound(center-extent,center+extent,_candidates); //tinh aabb bound... mai quay lai
+
+        foreach (var enemy in _candidates)
+        {
+            if(!enemy.IsAlive) continue;
+            Vector2 d = (Vector2)enemy.transform.position - center;
+            Vector2 local = new Vector2(Vector2.Dot(d, right), Vector2.Dot(d, up));
+            Vector2 closestPoint = new Vector2(Mathf.Clamp(local.x,-halfSize.x,halfSize.x),Mathf.Clamp(local.y,-halfSize.y,halfSize.y)); //kiem tra xem closet point tren he moi nam ow nua nao cua box halftRadius vector chieu dai xy tuongung...
+            float r = enemy.BodyRadius;
+            if((local-closestPoint).sqrMagnitude<=r*r) result.Add(enemy);
+        }
+        _candidates.Clear();
+    }
+        
     public void GetNeighbours(EnemyView enemyView,ref List<EnemyView> neighbours)
     {
         if (enemyView == null) return;

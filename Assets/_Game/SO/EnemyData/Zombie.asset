@@ -18,6 +18,6 @@ MonoBehaviour:
   Prefab: {fileID: 3950164587230804675, guid: bfe91b463eb5f634088a92b68420d16c, type: 3}
   Stats:
     Health: 1000
-    Speed: 3
+    Speed: 1
     Damage: 10
     BodyRadius: 0.5
