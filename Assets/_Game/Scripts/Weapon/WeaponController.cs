@@ -9,13 +9,14 @@ public class WeaponController
 
     private Player _player;
     private bool _initialized = false;
-    
+    private IProjectileService _projectileService;
     public IReadOnlyList<Weapon> Weapons => _weapons; //???
 
-    public WeaponController(PlayerController playerController, List<WeaponData> startingWeapons)
+    public WeaponController(PlayerController playerController, List<WeaponData> startingWeapons,IProjectileService projectileService)
     {
         _playerController = playerController;
         _startingWeapons = startingWeapons;
+        _projectileService = projectileService;
         Init(_playerController.GetPlayer());
     }
     
@@ -48,7 +49,7 @@ public class WeaponController
         {
             return;
         }
-        WeaponContext ctx = new WeaponContext(_playerController.PlayerPosition,_playerController.LastMoveDirection,_player.Stats);
+        WeaponContext ctx = new WeaponContext(_playerController.PlayerPosition,_playerController.LastMoveDirection,_player.Stats,_projectileService);
         float deltaTime = dt;
         for (int i = 0; i < _weapons.Count; i++)
         {

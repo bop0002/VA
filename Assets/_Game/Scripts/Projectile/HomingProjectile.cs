@@ -46,7 +46,7 @@ public class HomingProjectile : MovingProjectile
     
     protected override void Move(float deltaTime)
     {
-        if(!_isAlive) return;
+        if(!IsAlive) return;
         if (_target != null)
         {
             Vector2 desired = ((Vector2)_target.position - (Vector2)transform.position).normalized;

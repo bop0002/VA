@@ -21,12 +21,9 @@ public class MagicWandWeapon : Weapon
         {
             Vector3 spawnPos = ctx.PlayerPosition;//de tam :3
 
-            HomingProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<HomingProjectile>(Data.Prefab, spawnPos, rot,
-                ObjectPoolingManager.PoolType.WeaponProjectile);
+            Projectile projectile = ctx.ProjectileService.Spawn<HomingProjectile>(_magicWandData.Prefab,spawnPos,rot,info);
 
             if (projectile == null) return;
-
-            projectile.Init(info);
         }
     }
 

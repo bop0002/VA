@@ -116,7 +116,6 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         if(_stats.Health <= 0)
         {
             IsAlive = false;
-            ObjectPoolingManager.Instance.DespawnObject(gameObject,ObjectPoolingManager.PoolType.Enemy);
             onDead?.Invoke();
         }
     }

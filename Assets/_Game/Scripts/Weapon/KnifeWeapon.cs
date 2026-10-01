@@ -22,12 +22,9 @@ public class KnifeWeapon : Weapon
             Vector3 offset = (Vector3)(ctx.Direction.normalized * (i * _knifeData.SpawnSpacing));
             Vector3 spawnPos = ctx.PlayerPosition -  offset;
 
-            MovingProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<MovingProjectile>(Data.Prefab, spawnPos, rot,
-                ObjectPoolingManager.PoolType.WeaponProjectile);
+            Projectile projectile = ctx.ProjectileService.Spawn<MovingProjectile>(_knifeData.Prefab,spawnPos,rot,info);
 
             if (projectile == null) return;
-
-            projectile.Init(info);
         }
     }
 

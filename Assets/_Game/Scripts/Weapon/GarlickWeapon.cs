@@ -22,11 +22,9 @@ public class GarlickWeapon : Weapon
         {
             Vector3 spawnPos = ctx.PlayerPosition;
             
-            AuraProjectile projectile = ObjectPoolingManager.Instance.SpawnObject<AuraProjectile>(Data.Prefab, spawnPos, rot,
-                ObjectPoolingManager.PoolType.WeaponProjectile);
-                        
+            AuraProjectile projectile = ctx.ProjectileService.Spawn<AuraProjectile>(Data.Prefab, spawnPos, rot,info);
+            if(projectile == null) return;                        
             _cirleProjectile = projectile;
-            _cirleProjectile.Init(info);
             _isInitialized = true;
         }
     }

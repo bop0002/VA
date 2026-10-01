@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class GameBootstrap : MonoBehaviour
@@ -28,15 +27,17 @@ public class GameBootstrap : MonoBehaviour
     {
         _spatialHashGrid = new SpatialHashGrid(1f);
         _playerController = new PlayerController(_playerView, _playerStats);
-        _weaponController = new WeaponController(_playerController, startingWeapons);
+        _projectileController = new ProjectileController(_spatialHashGrid);
+        _weaponController = new WeaponController(_playerController, startingWeapons,_projectileController);
         _enemyController = new EnemyController(_playerController, _data, _spatialHashGrid,_testEnemySpawn);
     }
     
     public void Update()
     {
         _playerController.Tick(Time.deltaTime);
-        _weaponController.Tick(Time.deltaTime);
         _enemyController.Tick(Time.deltaTime);
+        _weaponController.Tick(Time.deltaTime);
+        _projectileController.Tick(Time.deltaTime,_playerController.PlayerPosition);
     }
 
     private void OnDrawGizmos() //temp

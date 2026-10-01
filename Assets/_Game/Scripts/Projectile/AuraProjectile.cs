@@ -5,32 +5,27 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
 {
     private static readonly Collider2D[] _hits = new Collider2D[64];
     [SerializeField] private LayerMask _enemyLayer;
-    private Dictionary<IDamageable, float> _hitCooldown;
+    private Dictionary<IDamageable, float> _hitCooldown = new Dictionary<IDamageable, float>();
     private Vector2 _center;
     private float radius;
     private int hitCount;
     private float currentTime;
-    private List<IDamageable> _toRemoveList;
+    private List<IDamageable> _toRemoveList = new List<IDamageable>();
 
     private readonly float collideRadius = 5f; // temp
     
-    private void Awake()
-    {
-        _hitCooldown = new Dictionary<IDamageable, float>();
-        _toRemoveList = new List<IDamageable>();
-    }
-    
-    protected void Update()
+
+    public override void Tick(float dt, ProjectileTickContext context)
     {
         currentTime = Time.time;
-        UpdatePosition();
+        UpdatePosition(context.Position);
         DamageInRange();
         CleanUp();
     }
-
-    private void UpdatePosition()
+    
+    private void UpdatePosition(Vector3 playerPosition)
     {
-        transform.position = _center;
+        transform.position = playerPosition;
     }
     
     private void DamageInRange()

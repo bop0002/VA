@@ -2,7 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpatialHashGrid
+public interface ISpatialGridQuery
+{
+    public void GetEnemyInRadius(Vector2 center, float radius, List<EnemyView> result);
+    public void GetEnemiesInBox(Vector2 center, Vector2 halfSize, Vector2 right, List<EnemyView> result);
+}
+
+public class SpatialHashGrid : ISpatialGridQuery
 {
     private readonly float _cellSize;
     private Dictionary<EnemyCell, List<EnemyView>> _buckets;

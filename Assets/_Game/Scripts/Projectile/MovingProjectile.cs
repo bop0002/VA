@@ -5,8 +5,6 @@ public class MovingProjectile : Projectile
     
     private float LifeTimeLeft;
     private int PierceLeft;
-
-    protected bool _isAlive;
     
     
     public override void Init(ProjectileSpawnInfo info)
@@ -14,24 +12,21 @@ public class MovingProjectile : Projectile
         base.Init(info);
         LifeTimeLeft = Stats.Duration;
         PierceLeft = Mathf.Max(1, Stats.Pierce);
-        _isAlive = true;
-
     }
     
-    protected virtual void Update()
+    public override void Tick(float dt,ProjectileTickContext context)
     {
-        if (!_isAlive) return;
-        float deltaTime = Time.deltaTime;
-        LifeTimeLeft -= deltaTime;
+        if (!IsAlive) return;
+        LifeTimeLeft -= dt;
         if(LifeTimeLeft < 0f)
         {
-            Despawn();
+            Kill();
             return;
         }
-
-        Move(deltaTime);
+        
+        Move(dt);
     }
-
+    
     protected virtual void Move(float deltaTime)
     {
         transform.position += (Vector3)(Direction * (Stats.Speed * deltaTime));
@@ -39,7 +34,7 @@ public class MovingProjectile : Projectile
 
     protected void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_isAlive) return;
+        if (!IsAlive) return;
 
         if(!other.gameObject.TryGetComponent(out IDamageable damageable))
         {
@@ -48,19 +43,9 @@ public class MovingProjectile : Projectile
 
         damageable.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback));
         PierceLeft--;
-        if (PierceLeft <= 0) Despawn();
+        if (PierceLeft <= 0) Kill();
     }
 
-    public void Despawn()
-    {
-        if (!_isAlive) return;
-        _isAlive = false;
-        ObjectPoolingManager.Instance.DespawnObject(this.gameObject,ObjectPoolingManager.PoolType.WeaponProjectile);
-    }
 
-    public override void OnDespawn()
-    {
-        _isAlive = false;
-    }
 
 }

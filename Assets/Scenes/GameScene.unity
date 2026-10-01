@@ -533,7 +533,10 @@ MonoBehaviour:
   _playerView: {fileID: 1044140623}
   _inputReader: {fileID: 11400000, guid: 6d5cb4af76e26ca45a6d41bd14b919ab, type: 2}
   _playerStats: {fileID: 11400000, guid: 92011668859d5854fada631c6e04b2bc, type: 2}
-  startingWeapons: []
+  startingWeapons:
+  - {fileID: 11400000, guid: cde1af5d203d9b34b85279b84440acfa, type: 2}
+  - {fileID: 11400000, guid: 3b5ae54e942cc004f9791d5531d261c0, type: 2}
+  - {fileID: 11400000, guid: 8dea3e4bcb847eb448b51c38dfbdc861, type: 2}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
   _testEnemySpawn: 10
   _mapController: {fileID: 1775352297}

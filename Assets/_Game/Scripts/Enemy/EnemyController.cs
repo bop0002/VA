@@ -50,10 +50,12 @@ public class EnemyController
         _deltaTime = dt;
         for (int i = _enemies.Count-1; i >=0;i--)
         {
-            if (!_enemies[i].IsAlive)
+            EnemyView enemy = _enemies[i];
+            if (!enemy.IsAlive)
             {
                 _enemies[i] =  _enemies[^1];
                 _enemies.RemoveAt( _enemies.Count-1); //hoac la ban event ;
+                ObjectPoolingManager.Instance.DespawnObject(enemy.gameObject,ObjectPoolingManager.PoolType.Enemy);
             }
         }
 
