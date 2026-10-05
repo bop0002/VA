@@ -24,8 +24,8 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
     private Coroutine flashCoroutine;
 
     private Vector2 _knockbackVelocity;
-    private const float maxSeperationDeltaTime = 1 / 30f;
-    [SerializeField] private float _knockbackDecay = 5f;
+    private const float maxSeperationDeltaTime = 1 / 30f; //dt
+    [SerializeField] private float _knockbackDecay = 5f; //Do tieu cua knock back (V)
     [SerializeField] private float _maxKnockback = 4f;
     [SerializeField] private  float overlapPushStr = 12f; //tmp
     [SerializeField] private  float overlapMaxPushStr = 15f; 

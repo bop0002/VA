@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingProjectile : Projectile
@@ -5,13 +7,17 @@ public class MovingProjectile : Projectile
     
     private float LifeTimeLeft;
     private int PierceLeft;
-    
-    
+    private List<EnemyView> _hits = new List<EnemyView>();
+    private List<EnemyView> _alreadyHit = new List<EnemyView>();
+    private Vector2 _worldHalfSize;
+    [SerializeField] private Vector2 _halfSize = new Vector2(1f,1f); //half rect x,y 
     public override void Init(ProjectileSpawnInfo info)
     {
         base.Init(info);
         LifeTimeLeft = Stats.Duration;
         PierceLeft = Mathf.Max(1, Stats.Pierce);
+        _worldHalfSize = _halfSize * transform.lossyScale;
+        _alreadyHit.Clear();
     }
     
     public override void Tick(float dt,ProjectileTickContext context)
@@ -23,7 +29,8 @@ public class MovingProjectile : Projectile
             Kill();
             return;
         }
-        
+
+        DamageInRange(context.Grid);
         Move(dt);
     }
     
@@ -32,20 +39,32 @@ public class MovingProjectile : Projectile
         transform.position += (Vector3)(Direction * (Stats.Speed * deltaTime));
     }
 
-    protected void OnTriggerEnter2D(Collider2D other)
+    private void DamageInRange(ISpatialGridQuery query)
     {
-        if (!IsAlive) return;
-
-        if(!other.gameObject.TryGetComponent(out IDamageable damageable))
+        query.GetEnemiesInBox(transform.position,_worldHalfSize,Direction,_hits);
+        foreach (var enemy in _hits)
         {
-            return;
+            if(!enemy.IsAlive || _alreadyHit.Contains(enemy)) continue;
+            enemy.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback),null);
+            _alreadyHit.Add(enemy);
+            PierceLeft--;
+            if (PierceLeft <= 0)
+            {
+                Kill();
+                return;
+            }
         }
-
-        damageable.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback));
-        PierceLeft--;
-        if (PierceLeft <= 0) Kill();
     }
-
-
+    
+    private void OnDrawGizmos()
+    {
+        Vector2 half = Application.isPlaying ? _worldHalfSize : _halfSize * transform.lossyScale.x;
+        Vector2 dir = Application.isPlaying ? Direction : Vector2.right;
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.FromToRotation(Vector3.right, dir), Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, half * 2f);
+        Gizmos.matrix = Matrix4x4.identity;
+    }
+    
 
 }

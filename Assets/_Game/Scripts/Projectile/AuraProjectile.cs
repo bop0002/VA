@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura va orbit:???
 {
-    private static readonly Collider2D[] _hits = new Collider2D[64];
+    private List<EnemyView> _hits = new List<EnemyView>();
     [SerializeField] private LayerMask _enemyLayer;
     private Dictionary<IDamageable, float> _hitCooldown = new Dictionary<IDamageable, float>();
     private Vector2 _center;
@@ -19,7 +19,7 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     {
         currentTime = Time.time;
         UpdatePosition(context.Position);
-        DamageInRange();
+        DamageInRange(context.Grid);
         CleanUp();
     }
     
@@ -28,15 +28,15 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
         transform.position = playerPosition;
     }
     
-    private void DamageInRange()
+    private void DamageInRange(ISpatialGridQuery query)
     {
         _center = (Vector2)transform.position;
         radius = collideRadius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
-        hitCount = Physics2D.OverlapCircleNonAlloc(_center, radius ,_hits,_enemyLayer); // thay colldide GetRadius
-        for (int i = 0; i<hitCount; i++)
+        query.GetEnemyInRadius(_center, radius, _hits);
+        foreach (var enemy in _hits)
         {
-            if(_hits[i].TryGetComponent(out IDamageable target)) TryDamage(target);
-        }
+            TryDamage(enemy);
+        }        
     }
 
     private void TryDamage(IDamageable target)
@@ -68,18 +68,12 @@ public class AuraProjectile : Projectile  ///Co nen lam kieu projectile cho aura
     }
     
     
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(_center, radius);
     }
     
-    //TruyenVector3 thi update vi tri garlick kieu j duma
-    public override void Init(ProjectileSpawnInfo info)
-    {
-        base.Init(info); 
-        //transform.SetParent(info.PlayerPosition);//
-    }
     
     
     
