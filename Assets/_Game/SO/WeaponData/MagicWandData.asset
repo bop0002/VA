@@ -23,7 +23,7 @@ MonoBehaviour:
     Size: 1
     Duration: 10
     Cooldown: 2.5
-    ProjectileCount: 1
+    ProjectileCount: 10
     Knockback: 1
     UpgradeDescription: 
   - Speed: 10
@@ -35,3 +35,4 @@ MonoBehaviour:
     ProjectileCount: 1
     Knockback: 1.2
     UpgradeDescription: 
+  ProjectileInterval: 0.1

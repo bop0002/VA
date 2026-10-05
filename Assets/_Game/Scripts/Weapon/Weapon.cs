@@ -12,6 +12,10 @@ public abstract class Weapon
 
     private float _cooldownTimer;
 
+    private int _shotsRemaining;
+    private int _shotIndex;
+    private float _shotTimer;
+    
     protected Weapon(WeaponData data)
     {
         Data = data;
@@ -20,17 +24,39 @@ public abstract class Weapon
 
     public void Tick(float deltaTime,in WeaponContext ctx)
     {
+
+        if (_shotsRemaining > 0)
+        {
+            TickVolley(deltaTime, ctx);
+            return;
+        }
         _cooldownTimer -= deltaTime;
         if (_cooldownTimer > 0f)
         {
             return;
         }
-        Fire(ctx);
+        //new shotting wave
+        _shotsRemaining = Mathf.Max(1, GetShotCount(ctx.PlayerStats));
+        _shotIndex = 0;
+        _shotTimer = 0f;
+        TickVolley(0f, ctx);
         _cooldownTimer = GetCooldown(ctx.PlayerStats);
     }
 
-    protected abstract void Fire(WeaponContext ctx);
-
+    private void TickVolley(float deltaTime, in WeaponContext ctx)
+    {
+        _shotTimer -= deltaTime;
+        while (_shotsRemaining > 0 && _shotTimer <= 0f)
+        {
+            FireShot(ctx, _shotIndex);
+            _shotIndex++;
+            _shotsRemaining--;
+            _shotTimer += Data.ProjectileInterval;
+        }
+    }
+    
+    protected abstract void FireShot(WeaponContext ctx,int shotIndex);
+    protected virtual int GetShotCount(PlayerStats playerStats) => 1;
     /// <summary>Chỉ số của level hiện tại sau khi áp modifier của player.</summary>
     protected virtual ProjectileStats BuildProjectileStats(PlayerStats playerStats)
     {

@@ -11,7 +11,7 @@ public class GarlickWeapon : Weapon
         _isInitialized = false;
     }
 
-    protected override void Fire(WeaponContext ctx)
+    protected override void FireShot(WeaponContext ctx,int shotIndex)
     {
         if (_isInitialized) return;
         ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);

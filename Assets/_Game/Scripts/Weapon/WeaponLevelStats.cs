@@ -13,7 +13,7 @@ public struct WeaponLevelStats
     public float Cooldown;
     public int ProjectileCount;
     public float Knockback;
-
+    
     [TextArea] public string UpgradeDescription;
 
 }

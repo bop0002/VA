@@ -19,11 +19,11 @@ MonoBehaviour:
   Levels:
   - Speed: 10
     Damage: 10
-    Pierce: 1
+    Pierce: 4
     Size: 1
     Duration: 2
     Cooldown: 1
-    ProjectileCount: 1
+    ProjectileCount: 10
     Knockback: 1
     UpgradeDescription: Cac1
   - Speed: 20
@@ -35,4 +35,5 @@ MonoBehaviour:
     ProjectileCount: 1
     Knockback: 1.2
     UpgradeDescription: Cac2
-  SpawnSpacing: 0.35
+  ProjectileInterval: 0.06
+  SideJitter: 0.3

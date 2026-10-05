@@ -9,22 +9,12 @@ public class MagicWandWeapon : Weapon
     }
 
     
-    protected override void Fire(WeaponContext ctx)
+    protected override int GetShotCount(PlayerStats playerStats) => GetProjectileCount(playerStats);
+
+    protected override void FireShot(WeaponContext ctx, int shotIndex)
     {
-        ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
-        int count = GetProjectileCount(ctx.PlayerStats);
-
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
-        Quaternion rot = RotationFromDirection(ctx.Direction);
-
-        for (int i = 0; i < count; i++)
-        {
-            Vector3 spawnPos = ctx.PlayerPosition;//de tam :3
-
-            Projectile projectile = ctx.ProjectileService.Spawn<HomingProjectile>(_magicWandData.Prefab,spawnPos,rot,info);
-
-            if (projectile == null) return;
-        }
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, BuildProjectileStats(ctx.PlayerStats));
+        ctx.ProjectileService.Spawn<HomingProjectile>(_magicWandData.Prefab, ctx.PlayerPosition, RotationFromDirection(ctx.Direction), info);
     }
 
     private Quaternion RotationFromDirection(Vector2 direction)

@@ -9,43 +9,15 @@ public class KnifeWeapon : Weapon
     {
         _knifeData = data;
     }
-
-    protected override void Fire(WeaponContext ctx)
-    {
-        ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
-        int count = GetProjectileCount(ctx.PlayerStats);
-
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
-        Quaternion rot = RotationFromDirection(ctx.Direction);
-
-        for (int i = 0; i < count; i++)
-        {
-            Vector3 offset = (Vector3)(ctx.Direction.normalized * (i * _knifeData.SpawnSpacing));
-            Vector3 spawnPos = ctx.PlayerPosition -  offset;
-
-            Projectile projectile = ctx.ProjectileService.Spawn<MovingProjectile>(_knifeData.Prefab,spawnPos,rot,info);
-
-            if (projectile == null) return;
-        }
-    }
-    
-    private IEnumerator FireBurstRoutine(WeaponContext ctx, int count, ProjectileStats stats)
+    protected override int GetShotCount(PlayerStats playerStats) => GetProjectileCount(playerStats);
+    protected override void FireShot(WeaponContext ctx,int shotIndex)
     {
         Vector2 dir = ctx.Direction.normalized;
         Vector3 perp = new Vector3(-dir.y, dir.x, 0f);
-        Quaternion rot = RotationFromDirection(dir);
+        Vector3 spawnPos = ctx.PlayerPosition + perp * Random.Range(-_knifeData.SideJitter, _knifeData.SideJitter);
 
-        for (int i = 0; i < count; i++)
-        {
-            // Lệch nhẹ tay cầm sang trái/phải ngẫu nhiên để không bị đè hẳn lên nhau
-            float slightOffset = Random.Range(-0.1f, 0.1f);
-            Vector3 spawnPos = ctx.PlayerPosition + perp * slightOffset;
-
-            ProjectileSpawnInfo info = new ProjectileSpawnInfo(dir, spawnPos, stats);
-            ctx.ProjectileService.Spawn<MovingProjectile>(_knifeData.Prefab, spawnPos, rot, info);
-
-            yield return new WaitForSeconds(0.06f);
-        }
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(dir, spawnPos, BuildProjectileStats(ctx.PlayerStats));
+        ctx.ProjectileService.Spawn<MovingProjectile>(_knifeData.Prefab, spawnPos, RotationFromDirection(dir), info);
     }
     
     private Quaternion RotationFromDirection(Vector2 direction)

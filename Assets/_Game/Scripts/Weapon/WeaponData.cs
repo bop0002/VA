@@ -14,7 +14,8 @@ public abstract class WeaponData : ScriptableObject
     [Header("Levels")] 
     public WeaponLevelStats[] Levels = new WeaponLevelStats[1];
     public int MaxLevel => Levels.Length;
-
+    [Header("Fire")]
+    public float ProjectileInterval = 0f;
     public abstract Weapon CreateRunTime();
 
     private void OnValidate()
