@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class EnemyController 
 {
     private PlayerController _playerController;
     private EnemyData _enemyData; // temp;
+    private readonly EnemyData _shooterData; // temp
+    private readonly IProjectileService _projectileService;
     private int _testEnemySpawn;
     SpatialHashGrid _spatialHashGrid;
     private List<EnemyView> _enemies;
@@ -13,28 +14,30 @@ public class EnemyController
     private List<EnemyView> _neighborCacheList; //Tam thoi work voi 1 cell size voi lon hon thi ko bic
     private float _deltaTime;
 
-    public EnemyController(PlayerController playerController,EnemyData enemyData,SpatialHashGrid spatialHashGrid,int testEnemySpawn)
+    public EnemyController(PlayerController playerController, EnemyData enemyData, EnemyData shooterData,
+        SpatialHashGrid spatialHashGrid, IProjectileService projectileService, int testEnemySpawn, int testShooterSpawn)
     {
         _playerController = playerController;
         _enemyData = enemyData;
+        _shooterData = shooterData;
         _spatialHashGrid = spatialHashGrid;
+        _projectileService = projectileService;
         _neighborCacheList = new List<EnemyView>();
         _enemies = new List<EnemyView>();
         _testEnemySpawn = testEnemySpawn;
-        for (int i = 0; i < _testEnemySpawn; i++)
+        for (int i = 0; i < _testEnemySpawn; i++) TestSpawn(_enemyData);
+        if (_shooterData != null)
         {
-            TestSpawn();
+            for (int i = 0; i < testShooterSpawn; i++) TestSpawn(_shooterData);
         }
     }
     
-    private void TestSpawn()
+    private void TestSpawn(EnemyData data)
     {
         Vector3 pos = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
-        Quaternion rot = Quaternion.identity;
-        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(_enemyData.Prefab, pos, rot,
+        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(data.Prefab, pos, Quaternion.identity,
             ObjectPoolingManager.PoolType.Enemy);
-        EnemySpawnContext context = new EnemySpawnContext(_playerController.PlayerPosition);
-        enemyView.Init(_enemyData, context);
+        enemyView.Init(data, new EnemySpawnContext(_playerController.PlayerPosition));
         _enemies.Add(enemyView);
     }
 
@@ -69,6 +72,14 @@ public class EnemyController
             _neighborCacheList.Clear();
             _spatialHashGrid.GetNeighbours(enemy,ref _neighborCacheList);
             enemy.Tick(_deltaTime,_neighborCacheList,_playerController.PlayerPosition);
+
+            // I-frame cua player chan viec tru mau moi frame.
+            if (enemy.IsAlive && CollisionMath.CircleOverlapsCircle(enemy.Position, enemy.Radius, _playerController.Position, _playerController.Radius))
+            {
+                _playerController.TakeDamage(new DamagingContext(enemy.ContactDamage, 0f));
+            }
+
+            if (enemy.IsAlive) enemy.RangedAttack?.Tick(_deltaTime, enemy, _playerController, _projectileService);
         }
     }
 }

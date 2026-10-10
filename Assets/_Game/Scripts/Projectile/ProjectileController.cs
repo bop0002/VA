@@ -9,12 +9,12 @@ public interface IProjectileService
 
 public class ProjectileController : IProjectileService
 {
-    ISpatialGridQuery _spatialHashGrid;
-    private List<Projectile> _projectiles;
-    public ProjectileController(ISpatialGridQuery spatialGridQuery)
+    private readonly List<Projectile> _projectiles = new List<Projectile>();
+    private readonly ProjectileTickContext _tickContext;
+
+    public ProjectileController(ITargetQuery enemyTargets, ITargetQuery playerTargets)
     {
-        _spatialHashGrid = spatialGridQuery;
-        _projectiles = new List<Projectile>();
+        _tickContext = new ProjectileTickContext(enemyTargets, playerTargets);
     }
 
     public T Spawn<T>(GameObject prefab, Vector3 position, Quaternion rotation, ProjectileSpawnInfo spawnInfo) where T : Projectile
@@ -27,12 +27,11 @@ public class ProjectileController : IProjectileService
         return projectile;
     }
 
-    public void Tick(float dt,Vector3 position)
+    public void Tick(float dt)
     {
-        ProjectileTickContext tickContext = new ProjectileTickContext(position, _spatialHashGrid);
         foreach (Projectile projectile in _projectiles)
         {
-            projectile.Tick(dt,tickContext);
+            projectile.Tick(dt, _tickContext);
         }
 
         for (int i = _projectiles.Count - 1; i >= 0; i--)

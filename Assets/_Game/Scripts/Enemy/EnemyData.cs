@@ -12,4 +12,7 @@ public class EnemyData : ScriptableObject
     public GameObject Prefab;
 
     public EnemyStats Stats;
+
+    [Header("Attack")]
+    public EnemyRangedAttackData RangedAttack; // null cx dc
 }

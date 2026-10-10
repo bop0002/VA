@@ -7,8 +7,8 @@ public class MovingProjectile : Projectile
     
     private float LifeTimeLeft;
     private int PierceLeft;
-    private List<EnemyView> _hits = new List<EnemyView>();
-    private List<EnemyView> _alreadyHit = new List<EnemyView>();
+    private readonly List<ITargetable> _hits = new List<ITargetable>();
+    private readonly List<ITargetable> _alreadyHit = new List<ITargetable>();
     private Vector2 _worldHalfSize;
     [SerializeField] private Vector2 _halfSize = new Vector2(1f,1f); //half rect x,y 
     public override void Init(ProjectileSpawnInfo info)
@@ -30,7 +30,7 @@ public class MovingProjectile : Projectile
             return;
         }
 
-        DamageInRange(context.Grid);
+        DamageInRange(context.TargetsFor(Team));
         Move(dt);
     }
     
@@ -39,14 +39,14 @@ public class MovingProjectile : Projectile
         transform.position += (Vector3)(Direction * (Stats.Speed * deltaTime));
     }
 
-    private void DamageInRange(ISpatialGridQuery query)
+    private void DamageInRange(ITargetQuery targets)
     {
-        query.GetEnemiesInBox(transform.position,_worldHalfSize,Direction,_hits);
-        foreach (var enemy in _hits)
+        targets.QueryBox(transform.position, _worldHalfSize, Direction, _hits);
+        foreach (var target in _hits)
         {
-            if(!enemy.IsAlive || _alreadyHit.Contains(enemy)) continue;
-            enemy.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback),null);
-            _alreadyHit.Add(enemy);
+            if (!target.IsAlive || _alreadyHit.Contains(target)) continue;
+            target.TakeDamage(new DamagingContext(Stats.Damage, Stats.Knockback));
+            _alreadyHit.Add(target);
             PierceLeft--;
             if (PierceLeft <= 0)
             {

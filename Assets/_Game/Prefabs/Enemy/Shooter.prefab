@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2312284575450741361}
   - component: {fileID: 4808852403926901823}
   m_Layer: 6
-  m_Name: Zombie
+  m_Name: Shooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4332616817028873846, guid: e23919a6d3fb5494a9c0929783e289dc, type: 3}
+  m_Sprite: {fileID: -4352385359252175734, guid: e23919a6d3fb5494a9c0929783e289dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

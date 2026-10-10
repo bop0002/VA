@@ -45,11 +45,11 @@ public class WeaponController
     
     public void Tick(float dt)
     {
-        if (!_initialized)
+        if (!_initialized || !_playerController.IsAlive)
         {
             return;
         }
-        WeaponContext ctx = new WeaponContext(_playerController.PlayerPosition,_playerController.LastMoveDirection,_player.Stats,_projectileService);
+        WeaponContext ctx = new WeaponContext(_playerController.PlayerPosition,_playerController.LastMoveDirection,_player.Stats,_projectileService,_playerController);
         float deltaTime = dt;
         for (int i = 0; i < _weapons.Count; i++)
         {

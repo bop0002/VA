@@ -6,10 +6,12 @@ public class GameBootstrap : MonoBehaviour
     [SerializeField] private PlayerView _playerView;
     [SerializeField] private InputReader _inputReader;
     
-    //Temp final before gameflow
+    //Temp before gameflow
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private List<WeaponData>  startingWeapons;
     [SerializeField] private EnemyData _data; 
+    [SerializeField] private EnemyData _shooterData;
+    [SerializeField] private int _testShooterSpawn;
     [SerializeField] private int _testEnemySpawn;
     
     [SerializeField] private MapController _mapController;
@@ -27,17 +29,20 @@ public class GameBootstrap : MonoBehaviour
     {
         _spatialHashGrid = new SpatialHashGrid(1f);
         _playerController = new PlayerController(_playerView, _playerStats);
-        _projectileController = new ProjectileController(_spatialHashGrid);
+        _projectileController = new ProjectileController(
+            new EnemyTargetQuery(_spatialHashGrid),
+            new PlayerTargetQuery(_playerController));
         _weaponController = new WeaponController(_playerController, startingWeapons,_projectileController);
-        _enemyController = new EnemyController(_playerController, _data, _spatialHashGrid,_testEnemySpawn);
+        _enemyController = new EnemyController(_playerController, _data, _shooterData, _spatialHashGrid, _projectileController, _testEnemySpawn, _testShooterSpawn);
     }
     
     public void Update()
     {
-        _playerController.Tick(Time.deltaTime);
-        _enemyController.Tick(Time.deltaTime);
-        _weaponController.Tick(Time.deltaTime);
-        _projectileController.Tick(Time.deltaTime,_playerController.PlayerPosition);
+        float dt = Time.deltaTime;
+        _playerController.Tick(dt);
+        _enemyController.Tick(dt);
+        _weaponController.Tick(dt);
+        _projectileController.Tick(dt);
     }
 
     private void OnDrawGizmos() //temp

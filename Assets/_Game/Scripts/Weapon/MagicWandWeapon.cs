@@ -13,7 +13,7 @@ public class MagicWandWeapon : Weapon
 
     protected override void FireShot(WeaponContext ctx, int shotIndex)
     {
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, BuildProjectileStats(ctx.PlayerStats));
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, BuildProjectileStats(ctx.PlayerStats), Team.Player, ctx.Owner);
         ctx.ProjectileService.Spawn<HomingProjectile>(_magicWandData.Prefab, ctx.PlayerPosition, RotationFromDirection(ctx.Direction), info);
     }
 

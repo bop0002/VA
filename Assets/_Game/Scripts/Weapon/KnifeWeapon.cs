@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class KnifeWeapon : Weapon
@@ -16,7 +15,7 @@ public class KnifeWeapon : Weapon
         Vector3 perp = new Vector3(-dir.y, dir.x, 0f);
         Vector3 spawnPos = ctx.PlayerPosition + perp * Random.Range(-_knifeData.SideJitter, _knifeData.SideJitter);
 
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(dir, spawnPos, BuildProjectileStats(ctx.PlayerStats));
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(dir, BuildProjectileStats(ctx.PlayerStats), Team.Player, ctx.Owner);
         ctx.ProjectileService.Spawn<MovingProjectile>(_knifeData.Prefab, spawnPos, RotationFromDirection(dir), info);
     }
     

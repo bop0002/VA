@@ -11,21 +11,13 @@ public class GarlickWeapon : Weapon
         _isInitialized = false;
     }
 
-    protected override void FireShot(WeaponContext ctx,int shotIndex)
+    protected override void FireShot(WeaponContext ctx, int shotIndex)
     {
-        if (_isInitialized) return;
-        ProjectileStats stats = BuildProjectileStats(ctx.PlayerStats);
-        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, ctx.PlayerPosition, stats);
-        Quaternion rot = Quaternion.Euler(0f, 0f, 0f);
-        
-        if (!_isInitialized)
-        {
-            Vector3 spawnPos = ctx.PlayerPosition;
-            
-            AuraProjectile projectile = ctx.ProjectileService.Spawn<AuraProjectile>(Data.Prefab, spawnPos, rot,info);
-            if(projectile == null) return;                        
-            _cirleProjectile = projectile;
-            _isInitialized = true;
-        }
+        if (_isInitialized) return; // aura chi spawn 1 lan, sau do tu bam theo owner
+        ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, BuildProjectileStats(ctx.PlayerStats), Team.Player, ctx.Owner);
+        AuraProjectile projectile = ctx.ProjectileService.Spawn<AuraProjectile>(Data.Prefab, ctx.PlayerPosition, Quaternion.identity, info);
+        if (projectile == null) return;
+        _cirleProjectile = projectile;
+        _isInitialized = true;
     }
 }

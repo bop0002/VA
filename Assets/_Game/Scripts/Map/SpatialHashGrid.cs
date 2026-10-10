@@ -65,8 +65,7 @@ public class SpatialHashGrid : ISpatialGridQuery
         {
             if(!enemy.IsAlive) continue;
 
-            float r = enemy.BodyRadius + radius;
-            if(r * r >= (center- (Vector2)enemy.transform.position).sqrMagnitude) result.Add(enemy);
+            if (CollisionMath.CircleOverlapsCircle(center, radius, enemy.transform.position, enemy.BodyRadius)) result.Add(enemy);
         }
 
         _candidates.Clear();
@@ -82,11 +81,7 @@ public class SpatialHashGrid : ISpatialGridQuery
         foreach (var enemy in _candidates)
         {
             if(!enemy.IsAlive) continue;
-            Vector2 d = (Vector2)enemy.transform.position - center;
-            Vector2 local = new Vector2(Vector2.Dot(d, right), Vector2.Dot(d, up));
-            Vector2 closestPoint = new Vector2(Mathf.Clamp(local.x,-halfSize.x,halfSize.x),Mathf.Clamp(local.y,-halfSize.y,halfSize.y)); //kiem tra xem closet point tren he moi nam ow nua nao cua box halftRadius vector chieu dai xy tuongung...
-            float r = enemy.BodyRadius;
-            if((local-closestPoint).sqrMagnitude<=r*r) result.Add(enemy);
+            if (CollisionMath.CircleOverlapsBox(enemy.transform.position, enemy.BodyRadius, center, halfSize, right)) result.Add(enemy);
         }
         _candidates.Clear();
     }

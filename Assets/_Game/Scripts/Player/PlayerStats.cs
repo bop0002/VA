@@ -15,5 +15,6 @@ public class PlayerStats : ScriptableObject
     public float CooldownRate;
     public float HealthRegenRate;
     public float ExperienceGainRate;
-    
+    public float BodyRadius = 0.4f;          
+    public float HitInvulnerability = 0.5f;  
 }

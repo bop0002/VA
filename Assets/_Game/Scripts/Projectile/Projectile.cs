@@ -5,6 +5,8 @@ public abstract class Projectile : MonoBehaviour,IPoolable
 
     protected Vector2 Direction;
     protected ProjectileStats Stats;
+    protected Team Team; 
+    protected ITargetable Owner;  
     private Vector3 _baseScale;
 
     public bool IsAlive { get;private set; }
@@ -18,14 +20,13 @@ public abstract class Projectile : MonoBehaviour,IPoolable
     {
         Direction = info.Direction.sqrMagnitude > 0.0001f ? info.Direction.normalized : Vector2.right ;
         Stats = info.Stats;
+        Team = info.Team;
+        Owner = info.Owner;
         transform.localScale = _baseScale * Stats.Size;
         IsAlive = true;
     }
 
-    public virtual void Tick(float dt,ProjectileTickContext context)
-    {
-        
-    }
+    public abstract void Tick(float dt, ProjectileTickContext context);
 
     public virtual void Kill()
     {
@@ -36,6 +37,7 @@ public abstract class Projectile : MonoBehaviour,IPoolable
     public virtual void OnDespawn()
     {
         IsAlive = false;
+        Owner = null; // khong giu reference toi enemy/player trong pool
     }
 
     public virtual void OnSpawn()

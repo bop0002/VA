@@ -1,14 +1,14 @@
-
-using UnityEngine;
-
-public struct ProjectileTickContext
+public readonly struct ProjectileTickContext
 {
-    public readonly Vector3 Position;
-    public readonly ISpatialGridQuery Grid;
+    public readonly ITargetQuery EnemyTargets;
+    public readonly ITargetQuery PlayerTargets;
 
-    public ProjectileTickContext(Vector3 position, ISpatialGridQuery grid)
+    public ProjectileTickContext(ITargetQuery enemyTargets, ITargetQuery playerTargets)
     {
-        Position = position;
-        Grid = grid;
+        EnemyTargets = enemyTargets;
+        PlayerTargets = playerTargets;
     }
+
+    // team = phe nguoi ban -> tra ve query cua phe DOI DIEN
+    public ITargetQuery TargetsFor(Team team) => team == Team.Player ? EnemyTargets : PlayerTargets;
 }

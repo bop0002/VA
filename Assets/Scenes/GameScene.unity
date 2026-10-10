@@ -538,7 +538,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3b5ae54e942cc004f9791d5531d261c0, type: 2}
   - {fileID: 11400000, guid: cde1af5d203d9b34b85279b84440acfa, type: 2}
   _data: {fileID: 11400000, guid: 89f181e8642b1f940a9f8b6b650d9127, type: 2}
-  _testEnemySpawn: 1000
+  _shooterData: {fileID: 11400000, guid: 8e84f72069cb07048a38715c0e24233d, type: 2}
+  _testShooterSpawn: 50
+  _testEnemySpawn: 50
   _mapController: {fileID: 1775352297}
   _objectPoolingManager: {fileID: 599346689}
 --- !u!1001 &4765778235213771010

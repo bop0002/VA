@@ -3,15 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyView : MonoBehaviour,IPoolable,IDamageable
+public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 {
     private EnemyData _data;
-    private EnemyStats  _stats;
+    private EnemyStats  _stats;      // chi so, chi doc sau Init
+    private float _currentHealth;    // trang thai, bi tru khi trung don
     private Vector2 _directionTowardPlayer;
     private Vector3 _playerPosition;
     private SpriteRenderer _renderer;
     
     public float BodyRadius => _stats.BodyRadius;
+    public Vector2 Position => transform.position;
+    public float Radius => _stats.BodyRadius;
+    public float ContactDamage => _stats.Damage;
+    public float MaxHealth => _stats.MaxHealth;
+    public float CurrentHealth => _currentHealth;
+
+    // tmp: state cua enemy dang nam trong View, sau nay tach Enemy model thi chuyen sang do
+    private readonly EnemyRangedAttack _rangedAttack = new EnemyRangedAttack();
+    public EnemyRangedAttack RangedAttack { get; private set; } // null = khong ban
     
     //DEBUG NOT FINAL VFX GET HIT
     [SerializeField] private float flashDuration = 0.1f;
@@ -62,7 +72,10 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         _data = data;
         _knockbackVelocity = Vector2.zero;
         _stats = data.Stats;
+        _currentHealth = _stats.MaxHealth;
         _playerPosition = context.PlayerPosition; //hoi thua cho ca player nen chi truyen direction thoi ?
+        RangedAttack = data.RangedAttack != null ? _rangedAttack : null;
+        RangedAttack?.Init(data.RangedAttack);
         IsAlive =  true;
     }
     
@@ -105,15 +118,15 @@ public class EnemyView : MonoBehaviour,IPoolable,IDamageable
         Debug.Log($"{gameObject.name} despawned");
     }
     
-    public void TakeDamage(DamagingContext ctx,Action onDead)
+    public void TakeDamage(DamagingContext ctx, Action onDead = null)
     {
         if (!IsAlive) return;
-        _stats.Health -= ctx.Damage;
-        /*Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_stats.Health}");*/
+        _currentHealth -= ctx.Damage;
+        /*Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_currentHealth}");*/
         
         Flash();
         ApplyKnockback(ctx.Knockback);
-        if(_stats.Health <= 0)
+        if(_currentHealth <= 0f)
         {
             IsAlive = false;
             onDead?.Invoke();

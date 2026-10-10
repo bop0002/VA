@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Vector2 = UnityEngine.Vector2;
 
-public class PlayerView : MonoBehaviour,IDamageable
+public class PlayerView : MonoBehaviour
 {
     public Vector3 Position => transform.position;
     public Vector2 MoveDirection { get; private set; }
@@ -11,15 +12,19 @@ public class PlayerView : MonoBehaviour,IDamageable
     [SerializeField] private InputReader  _inputReader; //Later refactor
     private Vector2 currentVelocity;
     [SerializeField] private float moveSpeed = 5;
-    public bool IsAlive { get; private set; }
     private Rigidbody2D _rigidbody2D;
     private Player _player;
     private PlayerStats Stats => _player.Stats;
+
+    [SerializeField] private float _hitFlashDuration = 0.1f;
+    private SpriteRenderer _renderer;
+    private Coroutine _hitFlash;
     
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _renderer = GetComponent<SpriteRenderer>();
         LastMoveDirection = Vector2.right;
     }
     
@@ -27,7 +32,6 @@ public class PlayerView : MonoBehaviour,IDamageable
     {
         _player = player;
         moveSpeed = Stats.SpeedRate*moveSpeed;
-        IsAlive = true;
     }
     
     private void OnEnable()
@@ -49,16 +53,26 @@ public class PlayerView : MonoBehaviour,IDamageable
         }
     }
 
-    public void TakeDamage(DamagingContext ctx,Action onDead = null)
+    public void PlayHitFeedback()
     {
-        if (!IsAlive) return;
-        _player.CurrentHealth -= ctx.Damage; //Tru vao stast ????
-        Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_player.CurrentHealth}");
-        if(_player.CurrentHealth <= 0)
-        {
-            Debug.Log("Player is dead");
-            IsAlive = false;
-        }
+        if (_hitFlash != null) StopCoroutine(_hitFlash);
+        _hitFlash = StartCoroutine(HitFlashRoutine());
+    }
+
+    private IEnumerator HitFlashRoutine()
+    {
+        _renderer.color = Color.red;
+        yield return new WaitForSeconds(_hitFlashDuration);
+        _renderer.color = Color.white;
+        _hitFlash = null;
+    }
+
+    public void PlayDeath()
+    {
+        _inputReader.OnMovePerformed -= HandleMove; // chet thi het nhan input
+        MoveDirection = Vector2.zero;
+        currentVelocity = Vector2.zero;
+        Debug.Log("Player is ded");
     }
 
     private void HandleMove(Vector2 direction)

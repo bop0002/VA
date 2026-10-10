@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HomingProjectile : MovingProjectile
 {
-    private List<EnemyView> _candidates = new List<EnemyView>();
+    private readonly List<ITargetable> _candidates = new List<ITargetable>();
     private Vector2 _center;     
-    private EnemyView _target; 
+    private ITargetable _target; 
     private bool _hasAimed;       // false = chua ngam lan nao -> lan dau co muc tieu se quay thang vao no
 
     //ban kinh tim dich
@@ -27,22 +27,22 @@ public class HomingProjectile : MovingProjectile
     {
         if (!IsAlive) return;
         _center = transform.position;
-        if(_target == null || !_target.IsAlive) _target = AcquireTarget(context.Grid);
+        if(_target == null || !_target.IsAlive) _target = AcquireTarget(context.TargetsFor(Team));
         base.Tick(dt,context); 
     }
 
-    private EnemyView AcquireTarget(ISpatialGridQuery query)
+    private ITargetable AcquireTarget(ITargetQuery targets)
     {
-        EnemyView closest = null;
-        query.GetEnemyInRadius(_center,radius,_candidates); 
+        ITargetable closest = null;
+        targets.QueryCircle(_center, radius, _candidates);
         float minDistance = float.MaxValue;
-        foreach (var enemy in _candidates)
+        foreach (var candidate in _candidates)
         {
-            float distance = (_center - (Vector2)enemy.transform.position).sqrMagnitude;
+            float distance = (_center - candidate.Position).sqrMagnitude;
             if(distance<0.0001f) continue;
             if (distance < minDistance)
             {
-                closest = enemy;
+                closest = candidate;
                 minDistance = distance;
             }
         }
@@ -60,7 +60,7 @@ public class HomingProjectile : MovingProjectile
     {
         if (_target != null)
         {
-            Vector2 toTarget = (Vector2)(_target.transform.position - transform.position);
+            Vector2 toTarget = _target.Position - (Vector2)transform.position;
             if (toTarget.sqrMagnitude > 0.0001f)
             {
                 Vector2 directionToTarget = toTarget.normalized;
