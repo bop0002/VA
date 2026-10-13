@@ -1,0 +1,1 @@
+đọc và phân tích structure project hiện tại tôi đang làm phần homing projectile cũng như vừa hoàn thành refactor tác projectile và movingprojectile ra nhưng homing projectile đang lỗi. Bạn hãy nhận xét quá trình tôi làm xem đã clean và structurelized code chưa và còn bug gì không

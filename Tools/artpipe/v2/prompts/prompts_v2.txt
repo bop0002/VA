@@ -1,0 +1,221 @@
+PROMPT GEMINI v2 (bản MỀM): nhân vật, enemy, vũ khí, projectile theo phong cách chibi của Tools/ArtRef/refmainchac.png
+=====================================================================================================================
+(Cập nhật 2026-10-11. Bản phong cách chibi mềm; có mục 3 vũ khí và projectile mới. Bản sao lưu chỉ đọc: prompts_v2_backup.txt)
+
+!! ĐÃ CHỐT 2026-10-13 (xem Docs/art/style-bible.md). KHÔNG cần gen Gemini lại cho:
+   - Player (mục 1): bản cuối là Assets/_Game/Art/Characters/PlayerV3, user sửa tay.
+   - Garlic aura (mục 3.3.1): vẽ bằng code (build_aura_v2.py), không dùng Gemini.
+   - Tilemap và props graveyard: vẽ bằng code (graveyard.py, graveyard_props.py).
+   Vẫn dùng file này cho: enemy mới (mục 2), icon vũ khí (3.1), projectile Knife/Wand (3.2, CHƯA CHỐT), FX khác (3.3.2+).
+
+CÁCH DÙNG (đọc trước)
+---------------------
+1. Ảnh đính kèm:
+   - Gen PLAYER: Tools/artpipe/v2/work/mainref_x8.png (ảnh ref đã phóng to x8).
+   - Gen ENEMY: Tools/artpipe/v2/work/player_anchor.png (player đã gen đạt, chính là inbox/V1/newchar.png).
+     Đây là ảnh mẫu chung để mọi enemy cùng cỡ pixel, cùng viền, cùng kiểu mặt với player.
+   - Gen VŨ KHÍ, PROJECTILE, FX: player_anchor.png + zombie_anchor.png (xem mục 3).
+   KHÔNG đính kèm ảnh tile: ảnh tile có viền đen và màu rực, Gemini sẽ bắt chước theo và làm sprite bị sắc.
+2. Mỗi ảnh chỉ gen 1 nhân vật. Gen nhiều nhân vật trong 1 ảnh thì pixel nhỏ, khó tách.
+3. Dán khối [STYLE] ở đầu mỗi prompt, sau đó dán prompt của từng mục bên dưới.
+4. Lưu ảnh vào Tools/artpipe/inbox/ và đặt tên rõ ràng (vd: player_v2.png, zombie_v2.png, knife_v2.png).
+5. Animation đi bộ KHÔNG gen bằng Gemini. Claude tự sinh từ ảnh idle.
+6. Nếu Gemini vẽ sai: chỉ sửa đúng câu bị sai rồi gen lại, đừng viết lại cả prompt.
+7. Nên mở một cuộc chat Gemini mới cho mỗi lượt gen. Gemini nhớ các ảnh đã tạo trước đó trong cùng
+   cuộc chat (khăn đỏ, kiếm...) và sẽ vẽ lại chúng.
+
+
+[STYLE]  (dán đầu mọi prompt)
+-------
+Cute soft chibi pixel art game sprite, in the exact style of the attached character reference:
+simple big rounded shapes, smooth clean pixel curves (no jagged staircase edges), very few details.
+Soft muted colors with gentle shading: 3 to 4 close tones per color, low contrast, light comes from
+the top-left. Outline is a DARK PURPLE-BROWN (#1e1630), not pure black, only around the outer
+silhouette; inner shapes are separated by color, NOT by outlines. No harsh highlights, no dithering,
+no glow, no drop shadow, no texture noise.
+Chibi proportions: the head is about 60% of total height, tiny round body, very short stubby legs.
+Faces are tiny and simple: eyes are just small dark dots or short dashes, no anime eyes, no shines.
+The sprite is about 36 pixels tall, drawn on a pixel grid, each art pixel is a clean square.
+Single sprite centered, facing the viewer in a slight 3/4 front view.
+Solid flat pure magenta background #FF00FF, no ground, no scenery, no text, no border.
+
+
+1. PLAYER (khung 32px), bám sát Tools/ArtRef/refmainchac.png
+-------------------------------------------------------------
+CÁCH A (ưu tiên, giống ref nhất): dùng chức năng SỬA ẢNH của Gemini ngay trên ảnh ref.
+  Chỉ đính kèm Tools/artpipe/v2/work/mainref_x8.png, không kèm ảnh nào khác, KHÔNG dán [STYLE].
+  Prompt:
+    Keep this character exactly as it is: same pixels, same colors, same shape, same pose.
+    Only change the background: remove the magic ring, the glow, the floor, the shadow, the sparks
+    and every other effect, and replace everything around the character with solid flat magenta #FF00FF.
+    Complete the parts of the character that are hidden by effects (the tip of the weapon, the feet)
+    in the same style. Do not redraw, do not sharpen, do not add details.
+
+CÁCH B (vẽ lại sạch): đính kèm mainref_x8.png, dán [STYLE] rồi dán prompt dưới.
+    Redraw EXACTLY the character from the attached image as a clean sprite. Do not redesign.
+    - A big rounded dark purple hood (#342b53, light #645784, shadow #241c3a) covering the whole head,
+      the soft pointed tip flops back toward the upper-left. Hood and cloak are one continuous piece.
+    - The face peeks out of a round opening: pale peach skin (#fbcebb), short reddish-brown bangs
+      (#914640) straight across the forehead, two tiny dark vertical dash eyes with small angled brows
+      (determined, slightly grumpy). No mouth, no nose.
+    - Short purple cloak over a tiny round body, a couple of darker purple fold lines across the chest.
+    - A dark red-brown cape lining showing on the left side (#7a2e30).
+    - Right hand holds a short wand pointing right with a pale icy-blue crystal tip (#a1c3d5).
+    - Two tiny stubby boots, muted brown-mauve (#7c4b4f).
+    - NO scarf, NO belt, NO buckle, NO sword, NO big anime eyes, NO hair strands over the eyes.
+
+  Sửa nhanh (thêm vào cuối nếu cần):
+  - Vẫn bị viền đen sắc: "softer look, outline is dark purple and thin, curves are smooth".
+  - Mặt bị vẽ thành anime: "the face is just a pale circle with two tiny dark dashes for eyes".
+  - Pixel quá to, ít chi tiết: "the character is about 40 pixels tall".
+
+
+2. ENEMY: đồng bộ với player (inbox/newchar.png)
+---------------------------------------------------
+Đính kèm Tools/artpipe/v2/work/player_anchor.png. Dán khối [ENEMY] dưới đây (KHÔNG dán [STYLE]),
+rồi dán mô tả từng con ở mục 2.1–2.8.
+
+[ENEMY]
+Create a NEW enemy character in EXACTLY the same art style as the attached hooded character,
+as if both were drawn by the same artist for the same game:
+- Same pixel size: the image is about 66x84 big square pixels, the enemy is about 36-40 pixels tall
+  (bat and ghost may be shorter), same chunky soft pixel curves.
+- Same outline: one dark near-black line around the outer silhouette and only a few inner lines
+  where shapes overlap (arms, body folds), same thickness as the reference.
+- Same shading: muted dusty colors, 3 tones per color, light from the top-left, soft lighter
+  patch on the top-left of the head, no harsh highlights, no dithering, no glow.
+- Same chibi body: the head is a big round shape about 55-60% of the height, tiny round body,
+  short stubby feet like two small blocks, small round mitten hands without fingers.
+- Same face language: eyes are just two small dark vertical dashes or dots, small angled brows to
+  show the mood, mouth only if described below. No anime eyes, no shine in the eyes.
+- Same view: facing the viewer in a slight 3/4 front view, idle pose, centered.
+- Colors must stay readable on a green grass ground, but not neon.
+- Solid flat pure magenta background #FF00FF. No ground, no shadow, no text, no other characters.
+
+2.1 Zombie
+[ENEMY] A chubby chibi zombie: big round bald head in muted sage-green skin with one small
+stitched scar, one dash eye and one round dot eye, sad-angry brows, small open mouth with one tooth,
+torn dusty-brown shirt with horizontal fold bands like the reference cloak, ragged muted blue pants,
+both mitten hands stretched forward. Funny, not gory.
+
+2.2 Zombie biến thể B
+[ENEMY] Same chibi zombie but paler yellow-green skin, a small tuft of hair on top, mouth open in
+a groan, one hand forward and one hanging down.
+
+2.3 Skeleton
+[ENEMY] A chibi skeleton: big round warm-cream skull (light brown shading, not grey) with two dark
+oval eye holes shaped like the reference's dash eyes, small grin of 3 teeth, tiny bone body with
+2-3 simple ribs, stubby bone feet, one mitten-like bone hand raised in a little fist.
+
+2.4 Skeleton đội mũ
+[ENEMY] The same chibi skeleton wearing a big dented rusty iron helmet that covers the top half
+of the skull (helmet shaped like a rounded hood), holding a short rusty sword pointing down.
+
+2.5 Ghost (khoảng 32 pixel cao)
+[ENEMY] A floating chibi ghost: big round pale lavender-blue body shaped like the reference's hood,
+tapering into a soft wavy tail curling to the left, two small dark dash eyes, tiny open mouth, small
+pink blush, two little stubby arms. No feet.
+
+2.6 Hound (khoảng 32 pixel cao)
+[ENEMY] A chibi hellhound sitting, round body with dusty dark purple-grey fur, big round head,
+pointy ears, small red dash eyes with angry brows, two tiny fangs, short stubby legs, a few soft
+spiky tufts on the back.
+
+2.7 Bat (khoảng 24 pixel cao, 2 frame)
+[ENEMY] A chibi bat: big round dusty-purple body that is mostly head, soft rounded wings fully
+raised up, small red dash eyes with angry brows, two tiny fangs, tiny stubby feet.
+  Frame 2: dùng sửa ảnh trên frame 1, câu "same bat, same style, same size, wings fully lowered down".
+
+2.8 Shooter (enemy bắn xa)
+[ENEMY] A chibi skeleton mage: same big rounded hood shape as the reference but in tattered dark
+teal-grey cloth, a round cream skull face inside with two small glowing teal dash eyes, horizontal
+fold bands on the robe, holding a crooked wooden staff with a small glowing teal crystal on top.
+Must look clearly different from the hero: hunched, ragged hood edge, skull face.
+
+Sửa nhanh cho enemy:
+- Pixel to hoặc nhỏ hơn player: thêm "pixels must be the same size as the reference character".
+- Mặt khác kiểu player: thêm "eyes exactly like the reference: two tiny dark vertical dashes".
+- Bị sắc hoặc rực quá: thêm "muted dusty colors like the reference, soft shading".
+
+
+3. VŨ KHÍ và PROJECTILE: đồng bộ với player và zombie đã chốt
+-------------------------------------------------------------
+Đính kèm 2 ảnh: Tools/artpipe/v2/work/player_anchor.png và Tools/artpipe/v2/work/zombie_anchor.png.
+Dán khối [ITEM] dưới đây (KHÔNG dán [STYLE] hay [ENEMY]), rồi dán mô tả từng món.
+Mỗi ảnh chỉ 1 món. Món càng nhỏ thì Gemini càng hay vẽ to ra; câu "same pixel size" trong [ITEM] là để giữ
+cỡ pixel. Nếu món vẫn bị vẽ to, xem mục Sửa nhanh ở cuối phần này.
+
+[ITEM]
+Create a single game item / effect sprite in EXACTLY the same pixel art style as the two attached
+characters, as if drawn by the same artist for the same game:
+- Same pixel size: each art pixel is exactly as big as one pixel of the attached characters.
+  The object is SMALL (size given below, in those pixels) and sits alone in the middle of a big empty canvas.
+- Same outline: one dark near-black line around the outer silhouette, same thickness as the references.
+- Same shading: muted dusty colors, 3 tones per color, light from the top-left, a soft lighter patch on
+  the top-left, no harsh highlights, no dithering, no gradients, no glow halo, no blur, no motion blur.
+- Chunky, rounded, slightly chubby cute shapes, simple and readable at small size.
+- Solid flat pure magenta background #FF00FF. No hands, no character, no ground, no shadow, no text.
+
+3.1 ICON VŨ KHÍ (icon UI khi chọn level-up, khoảng 20 pixel)
+3.1.1 Knife
+[ITEM] Size: about 20 pixels long. A small chubby throwing knife lying diagonally, tip pointing to the
+upper-right: short wide soft steel-blue blade with a pale top-left edge, small round golden guard,
+short brown leather-wrapped handle with a round pommel.
+
+3.1.2 Magic Wand
+[ITEM] Size: about 20 pixels long. A short chubby magic wand lying diagonally, tip to the upper-right:
+dark brown wooden stick, small golden band, a round pale icy-blue crystal on top with one tiny white
+sparkle pixel next to it.
+
+3.1.3 Garlic
+[ITEM] Size: about 18 pixels tall. A cute plump garlic bulb: round cream-white bulb with soft pale-purple
+stripes, a short green sprout on top, tiny dark root dots at the bottom.
+
+3.2 PROJECTILE (vật thể bay trong game)
+3.2.1 Ice Shards projectile
+[ITEM] Size: about 14 pixels long and 6 pixels tall. The same chubby throwing knife, perfectly horizontal,
+tip pointing straight to the RIGHT (game code rotates it), no speed lines.
+
+3.2.2 Magic Wand bolt
+[ITEM] Size: about 10 pixels wide. A round icy-blue magic orb flying to the right: pale blue core with
+a white center pixel, dark outline, and a short tail of 2 smaller pale-blue round dots behind it on the
+left, each dot with its own outline.
+
+3.2.3 Shooter bullet (đạn của quái bắn xa)
+[ITEM] Size: about 8 pixels wide. A small round teal-green orb with a pale highlight on the top-left,
+dark outline, and one tiny teal dot behind it on the left. Must look clearly hostile and different
+from the player's blue orb.
+
+3.3 FX (hiệu ứng)
+3.3.1 Garlic aura (vòng tròn quanh player)
+[ITEM] Size: about 60 pixels across. A soft pale yellow-white ring seen from top-down: a thin chunky ring
+2 pixels thick with a dark outline on the outside, transparent empty center, 4 tiny 4-point sparkles
+evenly spaced on the ring.
+  Có thể để Claude vẽ bằng code cho vòng tròn tròn đều. Gemini hay vẽ vòng méo.
+  -> ĐÃ CHỐT 2026-10-13: vẽ bằng code (Tools/artpipe/v2/build_aura_v2.py, bản H_lam_dao_tim). Bỏ qua mục này.
+
+3.3.2 Hit flash (3 frame)
+[ITEM] Size: about 14 pixels across. A small soft cartoon impact star: 4 to 5 chunky rounded points,
+white center, pale yellow points, dark outline.
+  Frame 2: dùng sửa ảnh, câu "same impact star, same style and pixel size, smaller with points spreading out".
+  Frame 3: dùng sửa ảnh, câu "same style and pixel size, the star is gone, only 4 tiny sparkles flying outward".
+
+3.3.3 Pickup gem kinh nghiệm (gợi ý thêm)
+[ITEM] Size: about 8 pixels tall. A small chubby faceted gem: soft sky-blue with a pale top-left facet,
+dark outline. Make 2 more versions with the same shape: green, and red.
+
+Sửa nhanh cho vũ khí và projectile:
+- Món bị vẽ to, kín cả ảnh: thêm "the object is tiny, it fills less than one tenth of the image width".
+- Viền mảnh hoặc không có viền: thêm "dark near-black outline around it exactly like the attached characters".
+- Có glow, có vệt mờ: thêm "no glow, no blur, flat pixel colors only".
+- Knife hoặc bolt bị nghiêng: thêm "perfectly horizontal, pointing straight right".
+
+
+GHI CHÚ KHI GEN
+---------------
+- Nếu viền vẫn đen và sắc: thêm "softer, outline is thin dark purple, colors are gentle and muted".
+- Nếu Gemini thêm chi tiết lạ (khăn, thắt lưng, vũ khí khác): thêm câu "NO ..." cho đúng chi tiết đó.
+- Nếu có bóng dưới chân hoặc nền cỏ: thêm "no ground shadow, no grass, background only flat magenta".
+- Nếu vẽ góc nghiêng hoặc nhìn từ trên xuống: thêm "front-facing 3/4 view, NOT top-down, NOT isometric".
+- Gen xong, Claude sẽ tách nền và đưa về lưới pixel. Màu lấy từ chính ảnh gen ra và viền giữ nguyên
+  như ảnh, không ép về bảng màu cũ, không tự vẽ viền mới.
