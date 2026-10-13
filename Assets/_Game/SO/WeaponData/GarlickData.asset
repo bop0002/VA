@@ -20,7 +20,7 @@ MonoBehaviour:
   - Speed: 1
     Damage: 20
     Pierce: 1
-    Size: 1
+    Size: 3
     Duration: 1.5
     Cooldown: 1
     ProjectileCount: 1
@@ -35,3 +35,4 @@ MonoBehaviour:
     ProjectileCount: 1
     Knockback: 0.5
     UpgradeDescription: 
+  ProjectileInterval: 0

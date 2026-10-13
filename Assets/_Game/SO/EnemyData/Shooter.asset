@@ -17,8 +17,8 @@ MonoBehaviour:
   Icon: {fileID: -5504826400998173309, guid: e23919a6d3fb5494a9c0929783e289dc, type: 3}
   Prefab: {fileID: 3950164587230804675, guid: 7e377112d321a3f4ca23709343fd0e6d, type: 3}
   Stats:
-    Health: 1000
+    MaxHealth: 0
     Speed: 1
     Damage: 10
-    BodyRadius: 0.5
+    BodyRadius: 0.3
   RangedAttack: {fileID: 11400000, guid: 6ff4db2ea30bfb740a90d9371d4cffc4, type: 2}
