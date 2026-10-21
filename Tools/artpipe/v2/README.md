@@ -11,7 +11,7 @@ Hướng art đã chốt nằm ở `Docs/art/style-bible.md`. Lệnh chạy từ
 | `graveyard.py` | Tilemap Graveyard (✅ chốt, style flat) | `out/tilesheet_C_graveyard{,_labeled,_demo}.png`. Style `detail` và `flat_soft` vào `out/_archive` |
 | `graveyard_props.py` | 17 prop Graveyard | `export_soft/Props_Graveyard/`, `out/graveyard_props_*.png`, `graveyard_torch.gif` |
 | `mock_scene.py` | Bóng chân + cảnh giả lập đèn | `export_soft/Shadows/`, `out/mock_scene_*.png` |
-| `build_fx.py` | Projectile từ Gemini (⏳ Knife/Wand chưa chốt) | `export_soft/Projectiles/proj_*.png` |
+| `build_fx.py` | Projectile từ Gemini (giờ chỉ còn dùng `proj_enemy`; FireBall/Rock là asset tải về) | `export_soft/Projectiles/proj_*.png` |
 | `build_soft.py` | Player và zombie gốc tách từ Gemini | `export_soft/A_zombie_to/` (chỉ xóa và tạo lại đúng thư mục này) |
 | `extract_soft.py` | Thư viện tách sprite chibi mềm (dùng `../artpipe.py`) | `out/soft/` |
 | `tiles_v2.py`, `terrain_v2.py`, `tilesheet_full.py` | Thư viện vẽ tile (graveyard dùng lại). `tilesheet_full` dựng sheet Meadow | `out/tilesheet_A_meadow*.png` |

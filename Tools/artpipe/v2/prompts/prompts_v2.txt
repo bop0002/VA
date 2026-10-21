@@ -6,7 +6,7 @@ PROMPT GEMINI v2 (bản MỀM): nhân vật, enemy, vũ khí, projectile theo ph
    - Player (mục 1): bản cuối là Assets/_Game/Art/Characters/PlayerV3, user sửa tay.
    - Garlic aura (mục 3.3.1): vẽ bằng code (build_aura_v2.py), không dùng Gemini.
    - Tilemap và props graveyard: vẽ bằng code (graveyard.py, graveyard_props.py).
-   Vẫn dùng file này cho: enemy mới (mục 2), icon vũ khí (3.1), projectile Knife/Wand (3.2, CHƯA CHỐT), FX khác (3.3.2+).
+   Vẫn dùng file này cho: enemy mới (mục 2), icon vũ khí (3.1), projectile Knife/Wand (3.2, ĐÃ THAY bằng asset tải về FireBall/Rock), FX khác (3.3.2+).
 
 CÁCH DÙNG (đọc trước)
 ---------------------

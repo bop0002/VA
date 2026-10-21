@@ -13,7 +13,7 @@
 | Props Graveyard | Đang dùng (đi kèm tilemap) | `Art/Props/Graveyard/` (17 PNG), `Prefabs/Props/Graveyard/` | `graveyard_props.py` (bản 2: to, mềm, 2 tông) |
 | Bóng chân | Đang dùng | `Art/FX/Shadows/` | `mock_scene.py` |
 | Zombie, Shooter (ghost) | Đang dùng, **chưa chốt lại** | `Art/Enemies/enemy_zombie_idle2.png`, `enemy_ghost.png` | Zombie gốc từ `build_soft.py` (A_zombie_to), user sửa tay |
-| Knife (iceshard), Magic Wand | ⏳ **Chưa confirm, chưa test** | `Art/Projectiles/proj_iceshard(_b).png`, `proj_wand.png` | `build_fx.py` từ ảnh Gemini |
+| FireBall (homing), Rock (ném thẳng) | Đang dùng, **chưa chốt** | `Art/Projectiles/FireBall/`, `Art/Projectiles/Rock/` (10 frame: 1–5 bay, 6–10 nổ), `Prefabs/Weapon/FireBall/`, `Prefabs/Weapon/Rock/` | Asset free tải về (2026-10-20), thay Knife và Magic Wand |
 | Đạn Shooter | Đang dùng tạm | `Art/Projectiles/proj_enemy.png` | `build_fx.py` |
 
 Đường dẫn Unity tính từ `Assets/_Game/`. Script nằm ở `Tools/artpipe/v2/`.
@@ -126,13 +126,16 @@
 
 | Projectile | Kích thước | Ghi chú |
 |---|---|---|
-| `proj_iceshard` | 22×13 | Thay Knife |
-| `proj_iceshard_b` | 24×13 | Bản thay thế |
-| `proj_wand` | 21×14 | Đạn Magic Wand |
+| `FireBall/001–010` | 64×64 mỗi frame | Vũ khí FireBall (`FireBallWeapon`, đạn `HomingProjectile`). Frame 1–5 bay (loop), 6–10 nổ |
+| `Rock/001–010` | 64×64 mỗi frame | Vũ khí Rock (`RockWeapon`, đạn `MovingProjectile`, có SideJitter). Frame 1–5 bay, 6–10 vỡ |
 | `proj_enemy` | 18×12 | Đạn Shooter |
+| `proj_iceshard(_b)`, `proj_wand` | | Không dùng nữa (Knife/Magic Wand cũ) |
 
-- Lấy từ ảnh Gemini bằng `build_fx.py`.
-- **Knife và Magic Wand: user chưa test và chưa confirm.** Khi chốt thì cập nhật mục 0.
+- FireBall và Rock là asset free tải về, không theo palette của game. Import: Single, Point, PPU 32, không nén.
+- Cấu trúc prefab: object gốc chứa script đạn (hitbox chỉnh bằng `_halfSize` + `_offset`). Object con `Visual` chứa SpriteRenderer và Animator.
+- FX nổ là prefab riêng (`FireBallHit`, `RockHit`) có `PooledFx`. `Visual` của FX phải cùng vị trí và scale với `Visual` của đạn để vụ nổ nằm đúng chỗ.
+- `proj_enemy` lấy từ ảnh Gemini bằng `build_fx.py`.
+- **FireBall và Rock: đang test, chưa chốt.** Khi chốt thì cập nhật mục 0.
 
 ## 7. Ánh sáng và bóng (khuyến nghị)
 

@@ -10,7 +10,7 @@
 | `Projectiles/aura.png`, `aura_ripple/` | ✅ Chốt | `build_aura_v2.py` (bản H) | `Projectiles/aura 2.png`, `Projectiles/AuraRiptile/` |
 | `Projectiles/aura_alpha.png` | User sửa tay (khoét lõi rộng khoảng 9px) | Không ghi đè | `Projectiles/aura_alpha 1.png` |
 | `Projectiles/aura_v2/H_lam_dao_tim/` | ✅ Chốt | Bản đầy đủ của aura chính | |
-| `Projectiles/proj_*.png` | ⏳ Knife/Wand chưa chốt | `build_fx.py` | `Projectiles/` |
+| `Projectiles/proj_*.png` | Chỉ `proj_enemy` còn dùng (Knife/Wand đã thay bằng FireBall/Rock tải về) | `build_fx.py` | `Projectiles/` |
 | `Props_Graveyard/` | Đang dùng | `graveyard_props.py` | `Props/Graveyard/` |
 | `Shadows/` | Đang dùng | `mock_scene.py` | `FX/Shadows/` |
 | `A_zombie_to/` | Nguồn gốc player và zombie (bị `build_soft.py` tạo lại) | `build_soft.py` | Zombie đang dùng là `Enemies/enemy_zombie_idle2.png` (user sửa) |
