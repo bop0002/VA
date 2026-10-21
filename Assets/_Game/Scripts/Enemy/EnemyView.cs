@@ -5,23 +5,19 @@ using UnityEngine;
 
 public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 {
-    private EnemyData _data;
-    private EnemyStats  _stats;      // chi so, chi doc sau Init
-    private float _currentHealth;    // trang thai, bi tru khi trung don
+    private readonly Enemy _model = new Enemy();
     private Vector2 _directionTowardPlayer;
     private Vector3 _playerPosition;
     private SpriteRenderer _renderer;
-    
-    public float BodyRadius => _stats.BodyRadius;
-    public Vector2 Position => transform.position;
-    public float Radius => _stats.BodyRadius;
-    public float ContactDamage => _stats.Damage;
-    public float MaxHealth => _stats.MaxHealth;
-    public float CurrentHealth => _currentHealth;
 
-    // tmp: state cua enemy dang nam trong View, sau nay tach Enemy model thi chuyen sang do
-    private readonly EnemyRangedAttack _rangedAttack = new EnemyRangedAttack();
-    public EnemyRangedAttack RangedAttack { get; private set; } // null = khong ban
+    public Enemy Model => _model;
+    public float BodyRadius => _model.BodyRadius;
+    public Vector2 Position => transform.position;
+    public float Radius => _model.BodyRadius;
+    public float ContactDamage => _model.ContactDamage;
+    public float MaxHealth => _model.MaxHealth;
+    public float CurrentHealth => _model.CurrentHealth;
+    public EnemyRangedAttack RangedAttack => _model.RangedAttack; // null = khong ban
     
     //DEBUG NOT FINAL VFX GET HIT
     [SerializeField] private float flashDuration = 0.1f;
@@ -57,7 +53,7 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
         flashCoroutine = null;
     }
     
-    public bool IsAlive { get; private set; }
+    public bool IsAlive => _model.IsAlive;
 
     private void Awake()
     {
@@ -69,14 +65,9 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
     
     public void Init(EnemyData data,EnemySpawnContext context)
     {
-        _data = data;
+        _model.Init(data);
         _knockbackVelocity = Vector2.zero;
-        _stats = data.Stats;
-        _currentHealth = _stats.MaxHealth;
         _playerPosition = context.PlayerPosition; //hoi thua cho ca player nen chi truyen direction thoi ?
-        RangedAttack = data.RangedAttack != null ? _rangedAttack : null;
-        RangedAttack?.Init(data.RangedAttack);
-        IsAlive =  true;
     }
     
     public void Tick(float deltaTime,List<EnemyView> neighbors,Vector3 playerPosition)
@@ -91,7 +82,7 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
     private void Move(float deltaTime,Vector2 overlapPushForce)
     {
         float sepDt = Mathf.Min(deltaTime,maxSeperationDeltaTime);
-        Vector2 displacement = ((_directionTowardPlayer * _stats.Speed + _knockbackVelocity )* deltaTime)  + overlapPushForce * sepDt;
+        Vector2 displacement = ((_directionTowardPlayer * _model.Speed + _knockbackVelocity )* deltaTime)  + overlapPushForce * sepDt;
         transform.position += (Vector3)displacement;
         _knockbackVelocity *= Mathf.Exp(-_knockbackDecay * deltaTime);
     }
@@ -115,28 +106,29 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 
     public void OnDespawn()
     {
-        Debug.Log($"{gameObject.name} despawned");
+        // tra ve pool giua luc dang nhay -> coroutine bi dung giua chung, reset ve material goc
+        if (flashCoroutine != null)
+        {
+            StopCoroutine(flashCoroutine);
+            flashCoroutine = null;
+        }
+        _renderer.material = originalMaterial;
     }
     
     public void TakeDamage(DamagingContext ctx, Action onDead = null)
     {
         if (!IsAlive) return;
-        _currentHealth -= ctx.Damage;
-        /*Debug.Log($"{gameObject.name} dealt {ctx.Damage} damage to {_currentHealth}");*/
-        
+        bool died = _model.ApplyDamage(ctx.Damage);
+
         Flash();
         ApplyKnockback(ctx.Knockback);
-        if(_currentHealth <= 0f)
-        {
-            IsAlive = false;
-            onDead?.Invoke();
-        }
+        if (died) onDead?.Invoke();
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position,_stats.BodyRadius);
+        Gizmos.DrawSphere(transform.position,_model.BodyRadius);
     }
 
     private Vector2 ComputeSeparation(List<EnemyView> neighbors)
@@ -148,7 +140,7 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
             if(other == this) continue;
             Vector2 delta = transform.position - other.transform.position;
             float distance = delta.magnitude;
-            float overlapRadius = other._stats.BodyRadius + _stats.BodyRadius;
+            float overlapRadius = other.BodyRadius + BodyRadius;
             if(distance < overlapRadius)
             {
                 Vector2 pushDir = Vector2.zero;
