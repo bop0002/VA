@@ -11,6 +11,7 @@ public class ObjectPoolingManager : MonoBehaviour
     private GameObject _propHolder;
     private GameObject _weaponProjectileHolder;
     private GameObject _enemyHolder;
+    private GameObject _fxHolder;
     public static ObjectPoolingManager Instance { get; private set; }
     
     private void Awake()
@@ -35,7 +36,8 @@ public class ObjectPoolingManager : MonoBehaviour
         TileMap,
         Prop,
         WeaponProjectile,
-        Enemy
+        Enemy,
+        Fx
     }
     
     private void SetUpEmpties()
@@ -53,6 +55,9 @@ public class ObjectPoolingManager : MonoBehaviour
         
         _enemyHolder = new GameObject("Enemy");
         _enemyHolder.transform.SetParent(_emptyHolder.transform);
+
+        _fxHolder = new GameObject("Fx");
+        _fxHolder.transform.SetParent(_emptyHolder.transform);
         
         DontDestroyOnLoad(_tileMapHolder.transform.parent);
         
@@ -108,6 +113,8 @@ public class ObjectPoolingManager : MonoBehaviour
                 return _weaponProjectileHolder;
             case PoolType.Enemy:
                 return _enemyHolder;
+            case PoolType.Fx:
+                return _fxHolder;
             default:
                 return null;
                 break;

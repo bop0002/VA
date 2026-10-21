@@ -24,7 +24,7 @@ MonoBehaviour:
     Duration: 1.5
     Cooldown: 1
     ProjectileCount: 1
-    Knockback: 0.5
+    Knockback: 4
     UpgradeDescription: 
   - Speed: 1
     Damage: 1.2

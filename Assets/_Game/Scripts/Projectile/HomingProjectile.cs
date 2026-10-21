@@ -71,6 +71,8 @@ public class HomingProjectile : MovingProjectile
                 //Di thang den muc tieu neu da co khong co thi queo trong mat
                 
                 _hasAimed = true;
+                // xoay sprite theo huong bay (FX too)
+                transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(Direction.y, Direction.x) * Mathf.Rad2Deg);
             }
         }
         base.Move(deltaTime); 

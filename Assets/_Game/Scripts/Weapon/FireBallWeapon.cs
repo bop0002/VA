@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class MagicWandWeapon : Weapon
+public class FireBallWeapon : Weapon
 {
-    private MagicWandWeaponData _magicWandData;
-    public MagicWandWeapon(MagicWandWeaponData data) : base(data)
+    private FireBallData _fireBallData;
+    public FireBallWeapon(FireBallData data) : base(data)
     {
-        _magicWandData = data;
+        _fireBallData = data;
     }
 
     
@@ -14,13 +14,14 @@ public class MagicWandWeapon : Weapon
     protected override void FireShot(WeaponContext ctx, int shotIndex)
     {
         ProjectileSpawnInfo info = new ProjectileSpawnInfo(ctx.Direction, BuildProjectileStats(ctx.PlayerStats), Team.Player, ctx.Owner);
-        ctx.ProjectileService.Spawn<HomingProjectile>(_magicWandData.Prefab, ctx.PlayerPosition, RotationFromDirection(ctx.Direction), info);
+        Vector3 spawnPos = ctx.PlayerPosition + (Vector3)ctx.Direction.normalized * _fireBallData.SpawnForward;
+        ctx.ProjectileService.Spawn<HomingProjectile>(_fireBallData.Prefab, spawnPos, RotationFromDirection(ctx.Direction), info);
     }
 
     private Quaternion RotationFromDirection(Vector2 direction)
     {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        return Quaternion.Euler(0f, 0f, angle -45); ///!!!
+        return Quaternion.Euler(0f, 0f, angle); // sprite ve huong sang phai
     }
 
 }

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b3f768dfca80524c9d4277ded8299c6, type: 3}
-  m_Name: MagicWandData
-  m_EditorClassIdentifier: Assembly-CSharp::MagicWandWeaponData
+  m_Name: FireBallData
+  m_EditorClassIdentifier: Assembly-CSharp::FireBallData
   Id: 3
-  DisplayName: MagicWand
+  DisplayName: FireBall
   Icon: {fileID: -5025235208797305419, guid: 4a832ee6f4c20894b8631d610cfdfbc6, type: 3}
-  Prefab: {fileID: 8957572570679923362, guid: 8e37b681e95d5ea418726f07deccf1c9, type: 3}
+  Prefab: {fileID: 9067889594832110098, guid: 11c28a28f675bbe4fad301b20c26e8f4, type: 3}
   Levels:
   - Speed: 5
-    Damage: 10
+    Damage: 5
     Pierce: 1
     Size: 1
     Duration: 10
-    Cooldown: 2.5
+    Cooldown: 1
     ProjectileCount: 10
-    Knockback: 1
+    Knockback: 0.5
     UpgradeDescription: 
   - Speed: 10
     Damage: 10
@@ -36,3 +36,4 @@ MonoBehaviour:
     Knockback: 1.2
     UpgradeDescription: 
   ProjectileInterval: 0.1
+  SpawnForward: 0.25

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 353d8533bf7614e45a38cd1fda99e56d, type: 3}
-  m_Name: KnifeData
-  m_EditorClassIdentifier: Assembly-CSharp::KnifeData
+  m_Name: RockData
+  m_EditorClassIdentifier: Assembly-CSharp::RockData
   Id: 1
-  DisplayName: Knife
+  DisplayName: Rock
   Icon: {fileID: -1988313005, guid: 6b90931aedc40134ca8103e5d51f34f1, type: 3}
-  Prefab: {fileID: 9067889594832110098, guid: 11c28a28f675bbe4fad301b20c26e8f4, type: 3}
+  Prefab: {fileID: 8957572570679923362, guid: 8e37b681e95d5ea418726f07deccf1c9, type: 3}
   Levels:
-  - Speed: 10
+  - Speed: 5
     Damage: 10
-    Pierce: 4
+    Pierce: 10
     Size: 1
-    Duration: 2
+    Duration: 1.5
     Cooldown: 1
-    ProjectileCount: 10
-    Knockback: 1
+    ProjectileCount: 3
+    Knockback: 2
     UpgradeDescription: Cac1
   - Speed: 20
     Damage: 2
@@ -36,4 +36,5 @@ MonoBehaviour:
     Knockback: 1.2
     UpgradeDescription: Cac2
   ProjectileInterval: 0.06
-  SideJitter: 0.3
+  SideJitter: 0.45
+  SpawnForward: 0.25
