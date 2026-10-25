@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e7c6be6f357f04d933f68082cceddb, type: 3}
   m_Name: Shooter
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  Id: 1
+  Id: 2
   DisplayName: Zombie
   Icon: {fileID: -5504826400998173309, guid: e23919a6d3fb5494a9c0929783e289dc, type: 3}
   Prefab: {fileID: 3950164587230804675, guid: 7e377112d321a3f4ca23709343fd0e6d, type: 3}

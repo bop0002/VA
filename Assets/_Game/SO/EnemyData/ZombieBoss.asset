@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e7c6be6f357f04d933f68082cceddb, type: 3}
+  m_Name: ZombieBoss
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  Id: 3
+  DisplayName: 
+  Icon: {fileID: 0}
+  Prefab: {fileID: 3950164587230804675, guid: bc075940a5c897f4b80036411988000e, type: 3}
+  Stats:
+    MaxHealth: 100
+    Speed: 1
+    Damage: 10
+    BodyRadius: 0.3
+  RangedAttack: {fileID: 0}

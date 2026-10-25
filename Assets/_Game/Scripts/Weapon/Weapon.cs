@@ -47,7 +47,6 @@ public abstract class Weapon
     
     protected abstract void FireShot(WeaponContext ctx,int shotIndex);
     protected virtual int GetShotCount(PlayerStats playerStats) => 1;
-    /// <summary>Chỉ số của level hiện tại sau khi áp modifier của player.</summary>
     protected virtual ProjectileStats BuildProjectileStats(PlayerStats playerStats)
     {
         WeaponLevelStats levelStats = Stats;

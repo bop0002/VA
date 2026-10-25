@@ -12,7 +12,7 @@ public class SpatialHashGrid : ISpatialGridQuery
 {
     private readonly float _cellSize;
     private Dictionary<EnemyCell, List<EnemyView>> _buckets;
-    private readonly float maxEnemyRadius = 0.5f; //tmp
+    private float _maxEnemyRadius; // ban kinh lon nhat trong frame, cap nhat o AddToCell
 
     private List<EnemyView> _candidates;
     
@@ -42,8 +42,8 @@ public class SpatialHashGrid : ISpatialGridQuery
     
     private void CollectEnemyInBound(Vector2 min,Vector2 max,List<EnemyView> result)
     {
-        EnemyCell cMin = WorldToCell(min - maxEnemyRadius * Vector2.one);
-        EnemyCell cMax = WorldToCell(max + maxEnemyRadius * Vector2.one);
+        EnemyCell cMin = WorldToCell(min - _maxEnemyRadius * Vector2.one);
+        EnemyCell cMax = WorldToCell(max + _maxEnemyRadius * Vector2.one);
 
         for (int x = cMin.X; x <= cMax.X; x++)
         {
@@ -106,6 +106,7 @@ public class SpatialHashGrid : ISpatialGridQuery
     
     public void AddToCell(EnemyView enemy)
     {
+        if (enemy.BodyRadius > _maxEnemyRadius) _maxEnemyRadius = enemy.BodyRadius;
         EnemyCell cell =  WorldToCell(enemy.transform);
         if (!_buckets.TryGetValue(cell, out var list))
         {
@@ -120,6 +121,7 @@ public class SpatialHashGrid : ISpatialGridQuery
     
     public void ClearBuckets()
     {
+        _maxEnemyRadius = 0f;
         foreach (var list in _buckets.Values)
         {
             list.Clear();

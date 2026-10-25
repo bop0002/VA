@@ -6,9 +6,14 @@ using UnityEngine;
 public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 {
     private readonly Enemy _model = new Enemy();
-    private Vector2 _directionTowardPlayer;
+    private Vector2 _moveDirection;
+    private Vector2 _fixedDirection; // khac zero = bay thang (swarm)
+    private float _fixedSpeed;
     private Vector3 _playerPosition;
     private SpriteRenderer _renderer;
+
+    public bool MovesStraight => _fixedDirection != Vector2.zero;
+    public Vector2 MoveDirection => MovesStraight ? _fixedDirection : _moveDirection;
 
     public Enemy Model => _model;
     public float BodyRadius => _model.BodyRadius;
@@ -68,13 +73,22 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
         _model.Init(data);
         _knockbackVelocity = Vector2.zero;
         _playerPosition = context.PlayerPosition; //hoi thua cho ca player nen chi truyen direction thoi ?
+        _fixedDirection = context.FixedDirection;
+        _fixedSpeed = context.FixedSpeed;
+    }
+
+    // Recycle: dich sang cho moi, bo knockback dang con
+    public void Teleport(Vector2 position)
+    {
+        transform.position = position;
+        _knockbackVelocity = Vector2.zero;
     }
     
     public void Tick(float deltaTime,List<EnemyView> neighbors,Vector3 playerPosition)
     {
         if(!IsAlive) return;
         _playerPosition = playerPosition;
-        _directionTowardPlayer = ( _playerPosition - transform.position).normalized;
+        _moveDirection = MovesStraight ? _fixedDirection : (Vector2)(_playerPosition - transform.position).normalized;
         Move(deltaTime,ComputeSeparation(neighbors));
         FlipSprite();
     }
@@ -82,14 +96,15 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
     private void Move(float deltaTime,Vector2 overlapPushForce)
     {
         float sepDt = Mathf.Min(deltaTime,maxSeperationDeltaTime);
-        Vector2 displacement = ((_directionTowardPlayer * _model.Speed + _knockbackVelocity )* deltaTime)  + overlapPushForce * sepDt;
+        float speed = MovesStraight ? _fixedSpeed : _model.Speed;
+        Vector2 displacement = ((_moveDirection * speed + _knockbackVelocity )* deltaTime)  + overlapPushForce * sepDt;
         transform.position += (Vector3)displacement;
         _knockbackVelocity *= Mathf.Exp(-_knockbackDecay * deltaTime);
     }
 
     private void FlipSprite()
     {
-        if (!(_directionTowardPlayer.x > 0))
+        if (!(_moveDirection.x > 0))
         {
             _renderer.flipX = true;
         }
@@ -106,7 +121,6 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 
     public void OnDespawn()
     {
-        // tra ve pool giua luc dang nhay -> coroutine bi dung giua chung, reset ve material goc
         if (flashCoroutine != null)
         {
             StopCoroutine(flashCoroutine);
@@ -133,7 +147,6 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
 
     private Vector2 ComputeSeparation(List<EnemyView> neighbors)
     {
-        //later to ispatailgrid???
         Vector2 pushForce = Vector2.zero;
         foreach(var other in neighbors)
         {
@@ -161,7 +174,7 @@ public class EnemyView : MonoBehaviour, IPoolable, ITargetable
     
     private void ApplyKnockback(float knockback)
     {
-        _knockbackVelocity -= _directionTowardPlayer * knockback * _knockbackDecay ;
+        _knockbackVelocity -= _moveDirection * knockback * _knockbackDecay ;
         _knockbackVelocity = Vector2.ClampMagnitude(_knockbackVelocity,_maxKnockback*_knockbackDecay);
     }
 }

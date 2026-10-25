@@ -169,6 +169,22 @@ public class ObjectPoolingManager : MonoBehaviour
     {
         return SpawnObject<GameObject>(prefab, pos, rot, poolType);
     }
+    //Tao san count object
+    public void Prewarm(GameObject prefab, int count, PoolType poolType)
+    {
+        if (!_prefabs2Pool.ContainsKey(prefab))
+        {
+            CreatePool(prefab, poolType);
+        }
+
+        ObjectPool<GameObject> pool = _prefabs2Pool[prefab];
+        int missing = count - pool.CountInactive;
+        if (missing <= 0) return;
+
+        List<GameObject> temp = new List<GameObject>(missing); 
+        for (int i = 0; i < missing; i++) temp.Add(pool.Get());
+        foreach (var obj in temp) pool.Release(obj);
+    }
 
     public void DespawnObject(GameObject obj,PoolType poolType)
     {

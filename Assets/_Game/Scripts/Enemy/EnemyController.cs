@@ -1,44 +1,70 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController 
 {
-    private PlayerController _playerController;
-    private EnemyData _enemyData; // temp;
-    private readonly EnemyData _shooterData; // temp
+    private readonly PlayerController _playerController;
     private readonly IProjectileService _projectileService;
-    private int _testEnemySpawn;
-    SpatialHashGrid _spatialHashGrid;
-    private List<EnemyView> _enemies;
+    private readonly SpatialHashGrid _spatialHashGrid;
+    private readonly List<EnemyView> _enemies;
 
-    private List<EnemyView> _neighborCacheList; //Tam thoi work voi 1 cell size voi lon hon thi ko bic
+    private List<EnemyView> _neighborCacheList; //Tam thoi work voi 1 cell size voi lon hon thi ko bic (khong readonly vi truyen ref)
     private float _deltaTime;
 
-    public EnemyController(PlayerController playerController, EnemyData enemyData, EnemyData shooterData,
-        SpatialHashGrid spatialHashGrid, IProjectileService projectileService, int testEnemySpawn, int testShooterSpawn)
+    public event Action<EnemyDeathInfo> EnemyDied; // sau nay: roi XP gem, UI kill
+
+    // Gom ca enemy vua chet chua kip don 
+    public int ActiveCount => _enemies.Count;
+
+    public EnemyController(PlayerController playerController, SpatialHashGrid spatialHashGrid, IProjectileService projectileService)
     {
         _playerController = playerController;
-        _enemyData = enemyData;
-        _shooterData = shooterData;
         _spatialHashGrid = spatialHashGrid;
         _projectileService = projectileService;
         _neighborCacheList = new List<EnemyView>();
         _enemies = new List<EnemyView>();
-        _testEnemySpawn = testEnemySpawn;
-        for (int i = 0; i < _testEnemySpawn; i++) TestSpawn(_enemyData);
-        if (_shooterData != null)
-        {
-            for (int i = 0; i < testShooterSpawn; i++) TestSpawn(_shooterData);
-        }
     }
-    
-    private void TestSpawn(EnemyData data)
+
+    public EnemyView Spawn(EnemyData data, Vector2 position)
     {
-        Vector3 pos = new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f));
-        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(data.Prefab, pos, Quaternion.identity,
+        return SpawnWithContext(data, position, new EnemySpawnContext(_playerController.PlayerPosition));
+    }
+
+    // Swarm
+    public EnemyView SpawnStraight(EnemyData data, Vector2 position, Vector2 direction, float speed)
+    {
+        return SpawnWithContext(data, position, new EnemySpawnContext(_playerController.PlayerPosition, direction, speed));
+    }
+
+    private EnemyView SpawnWithContext(EnemyData data, Vector2 position, EnemySpawnContext context)
+    {
+        EnemyView enemyView = ObjectPoolingManager.Instance.SpawnObject<EnemyView>(data.Prefab, position, Quaternion.identity,
             ObjectPoolingManager.PoolType.Enemy);
-        enemyView.Init(data, new EnemySpawnContext(_playerController.PlayerPosition));
+        if (enemyView == null) return null;
+        enemyView.Init(data, context);
         _enemies.Add(enemyView);
+        return enemyView;
+    }
+
+
+    public void RecycleOutside(SpawnArea spawnArea, SpawnArea keepArea)
+    {
+        for (int i = _enemies.Count - 1; i >= 0; i--)
+        {
+            EnemyView enemy = _enemies[i];
+            if (!enemy.IsAlive || keepArea.Contains(enemy.Position)) continue;
+
+            if (!enemy.MovesStraight)
+            {
+                enemy.Teleport(spawnArea.OppositeEdgePoint(enemy.Position));
+                continue;
+            }
+            Vector2 offset = enemy.Position - spawnArea.Center;
+            bool passedPlayer = Vector2.Dot(offset, enemy.MoveDirection) > 0f;
+            bool tooFar = offset.sqrMagnitude > (keepArea.HalfExtents * 2f).sqrMagnitude;
+            if (passedPlayer || tooFar) DespawnStraight(i);
+        }
     }
 
     public void DrawGizmos()
@@ -54,12 +80,9 @@ public class EnemyController
         for (int i = _enemies.Count-1; i >=0;i--)
         {
             EnemyView enemy = _enemies[i];
-            if (!enemy.IsAlive)
-            {
-                _enemies[i] =  _enemies[^1];
-                _enemies.RemoveAt( _enemies.Count-1); //hoac la ban event ;
-                ObjectPoolingManager.Instance.DespawnObject(enemy.gameObject,ObjectPoolingManager.PoolType.Enemy);
-            }
+            if (enemy.IsAlive) continue;
+            EnemyDied?.Invoke(new EnemyDeathInfo(enemy.Model.Data, enemy.Position));
+            RemoveAt(i);
         }
 
         foreach (var enemy in _enemies)
@@ -81,5 +104,20 @@ public class EnemyController
 
             if (enemy.IsAlive) enemy.RangedAttack?.Tick(_deltaTime, enemy, _playerController, _projectileService);
         }
+        Debug.Log(ActiveCount);
+    }
+    
+    private void DespawnStraight(int index)
+    {
+        _enemies[index].Model.MarkDespawned();
+        RemoveAt(index);
+    }
+    
+    private void RemoveAt(int index)
+    {
+        EnemyView enemy = _enemies[index];
+        _enemies[index] = _enemies[^1];
+        _enemies.RemoveAt(_enemies.Count - 1);
+        ObjectPoolingManager.Instance.DespawnObject(enemy.gameObject, ObjectPoolingManager.PoolType.Enemy);
     }
 }

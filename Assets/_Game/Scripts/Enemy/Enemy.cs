@@ -33,4 +33,9 @@ public class Enemy
         IsAlive = false;
         return true;
     }
+
+    public void MarkDespawned()
+    {
+        IsAlive = false;
+    }
 }
